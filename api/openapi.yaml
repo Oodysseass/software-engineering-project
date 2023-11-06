@@ -1,0 +1,1408 @@
+openapi: 3.0.0
+info:
+  title: TeamMate API
+  description: Software Engineering Course TeamMate API
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/OSOFIKITIS/TeamMate/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/ANASTASISBELTES_1/TeamMate/3.0.0
+tags:
+- name: unregister
+  description: Unregistered user
+- name: user
+  description: Registered user
+- name: admin
+  description: Admin of a team
+paths:
+  /user:
+    post:
+      tags:
+      - unregister
+      summary: Create a new user account
+      description: |
+        FR1 - The user must be able to create account.
+      operationId: createUser
+      requestBody:
+        description: PersonalDetails of the user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_body'
+        required: true
+      responses:
+        "200":
+          description: Successful sign up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: User Already Exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Unregister
+  /user/login:
+    put:
+      tags:
+      - user
+      summary: Logs user into the system
+      description: |
+        FR2 - The registered user must be able to log in.
+      operationId: loginUser
+      requestBody:
+        description: Login Credentials
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_login_body'
+        required: true
+      responses:
+        "200":
+          description: Successful log in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "401":
+          description: Invalid Credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+  /user/{userId}:
+    get:
+      tags:
+      - user
+      description: |
+        FR3 - A user that is logged in to his account must be able to update his
+        password
+      operationId: userUserIdGET
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+    put:
+      tags:
+      - user
+      summary: Update user information
+      description: |
+        FR3 - A user that is logged in to his account must be able to update his
+        password
+      operationId: updateUser
+      parameters:
+      - name: userId
+        in: path
+        description: id of the user that need to update his/her info
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: PersonalDetails of the user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_userId_body'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+  /user/{userId}/invitations:
+    get:
+      tags:
+      - user
+      summary: See invitations
+      description: |
+        FR5 - The logged in user must be to manage his invitations.
+      operationId: seeInvitation
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+  /user/{userId}/createTeam:
+    post:
+      tags:
+      - user
+      summary: Create new Team
+      description: |
+        FR4 - The logged in user must be able to create a team.
+      operationId: createTeam
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user that wants to create a team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamName
+        in: query
+        description: the name of the created team
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful team creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+  /user/{userId}/team/{teamId}/sendInvitation:
+    put:
+      tags:
+      - admin
+      summary: Send an Invitation to another User
+      description: |
+        FR6 - The admin must be able to send invitations to logged in users to his team.
+      operationId: sendInvitation
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: invitedUserEmail
+        in: query
+        description: the email of the invited user
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_4'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Admin
+  /user/{userId}/team/{teamId}/contacts:
+    get:
+      tags:
+      - user
+      summary: Get teammate information
+      description: |
+        FR12 - The team member must be able to see the personal information of the other members.
+      operationId: getContacts
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user that wants to see the team contacts
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of the team.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                - name: tasos
+                  surname: karakoul
+                  profileimage: "1111111"
+                - name: giwrgos
+                  surname: gkyzis
+                  profileimage: "0000001"
+                xml:
+                  name: AllContacts
+                items:
+                  $ref: '#/components/schemas/inline_response_200_5'
+                x-content-type: application/json
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+  /user/{userId}/team/{teamId}/contacts/{teammateUserId}:
+    get:
+      tags:
+      - user
+      summary: Get teammate information
+      description: |
+        FR12 - The team member must be able to see the personal information of the other members.
+      operationId: getTeammateInfo
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user that wants to see the personal information
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of the team.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teammateUserId
+        in: path
+        description: the id of the teammate that the user wants to see his information.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_BasicInformation'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+    delete:
+      tags:
+      - admin
+      summary: Kick teammate from the team
+      description: |
+        FR14 - An admin must be able to kick a member from the team.
+      operationId: kickTeammate
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the admin
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of the team.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teammateUserId
+        in: path
+        description: the id of the team member that the admin wants to kick.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully kicked teammate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_6'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "404":
+          description: Team or teammate not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Admin
+  /user/{userid}/team/{teamid}/teamChat:
+    get:
+      tags:
+      - user
+      summary: Get team chat messages
+      description: |
+        FR10 - Team members must be able to see the chat.
+      operationId: getTeamChat
+      parameters:
+      - name: userid
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: teamid
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                - message: ' Hello team!'
+                  senderId: 1
+                - message: Match Day!!! LET'S
+                  senderId: 2
+                xml:
+                  name: Messages
+                items:
+                  $ref: '#/components/schemas/inline_response_200_7'
+                x-content-type: application/json
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+    put:
+      tags:
+      - user
+      summary: Send a message to the team chat
+      description: |
+        (FR10) - Team members must be able to send messages to the team chat.
+      operationId: sendTeamChatMessage
+      parameters:
+      - name: userid
+        in: path
+        description: The ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: teamid
+        in: path
+        description: The ID of the team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        description: Message Entity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/teamid_teamChat_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully sent message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/teamid_teamChat_body'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+  /user/{userid}/team/{teamid}/calendarEdit:
+    get:
+      tags:
+      - admin
+      summary: edit calendar by admin
+      description: |
+        FR7 - The admin must be able to edit calendar
+      operationId: EditCalendar
+      parameters:
+      - name: userid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: teamid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                - locations: gym
+                  time: "13.30"
+                  practice: Weight
+                - location: court
+                  time: "19.30"
+                  practice: Basketball
+                xml:
+                  name: Day
+                items:
+                  $ref: '#/components/schemas/inline_response_200_8'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Admin
+    put:
+      tags:
+      - admin
+      summary: edit calendar by admin
+      description: |
+        FR7 - The admin must be able to edit calendar
+      operationId: editCalendar
+      parameters:
+      - name: userid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: teamid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        description: Day of Calendar
+        content:
+          application/json:
+            schema:
+              type: array
+              example:
+              - locations: gym
+                time: "13.30"
+                practice: Weight
+              - location: court
+                time: "19.30"
+                practice: Basketball
+              xml:
+                name: Day
+              items:
+                $ref: '#/components/schemas/inline_response_200_8'
+        required: true
+      responses:
+        "200":
+          description: Default response
+          content:
+            application/json:
+              schema:
+                type: array
+                example:
+                - locations: gym
+                  time: "13.30"
+                  practice: Weight
+                - location: court
+                  time: "19.30"
+                  practice: Basketball
+                xml:
+                  name: Day
+                items:
+                  $ref: '#/components/schemas/inline_response_200_8'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Admin
+  /user/{userId}/team/{teamId}/statistics:
+    get:
+      tags:
+      - user
+      summary: Get the Statictics Section of the Team
+      description: |
+        FR11 - The team member must be able to browse to all team sections
+      operationId: getStatistics
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+    put:
+      tags:
+      - admin
+      summary: Edit the Statistics Section
+      description: |
+        FR6 - The admin must be able to edit the Statistics team section
+      operationId: editStatistics
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Statistcs file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/teamId_statistics_body'
+        required: true
+      responses:
+        "200":
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/teamId_statistics_body'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Admin
+  /user/{userId}/team/{teamId}/workout:
+    get:
+      tags:
+      - user
+      summary: Get the Workout Section of the Team
+      description: |
+        FR11 - The team member must be able to browse to all team sections
+      operationId: getWorkout
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_10'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: User
+    put:
+      tags:
+      - admin
+      summary: Edit the Workout Section
+      description: |
+        FR9 - The admin must be able to edit the Workout team section
+      operationId: editWorkout
+      parameters:
+      - name: userId
+        in: path
+        description: the id of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: teamId
+        in: path
+        description: the id of team
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/teamId_workout_body'
+        required: true
+      responses:
+        "200":
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/teamId_workout_body'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-swagger-router-controller: Admin
+components:
+  schemas:
+    LoginInfo:
+      type: object
+      properties:
+        email:
+          type: string
+          example: Testing@mpeltes.gr
+        password:
+          type: string
+          example: testpassword
+    BasicInformation:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Anastasis
+        surname:
+          type: string
+          example: Beltes
+        profileimage:
+          type: string
+          example: "101010111"
+        age:
+          type: integer
+          example: 22
+        weight:
+          type: number
+          example: 80.5
+        height:
+          type: number
+          example: 185.5
+        email:
+          type: string
+          example: tasoulis@example.com
+        phone:
+          type: string
+          example: "6932112312"
+      xml:
+        name: BasicInformation
+    PersonalDetails:
+      type: object
+      properties:
+        BasicInformation:
+          $ref: '#/components/schemas/user_BasicInformation'
+        password:
+          type: string
+          example: test1233
+        isAdmin:
+          type: boolean
+          example: true
+        teamdId:
+          type: integer
+          example: 2
+        userId:
+          type: integer
+          example: 1
+      xml:
+        name: User
+    Statistics:
+      type: object
+      properties:
+        statfile:
+          type: string
+          format: binary
+          example: !!binary |-
+            U3RhdGlzdGljc0ZpbGU=
+      xml:
+        name: Statistics
+    Contact:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Anastasis
+        surname:
+          type: string
+          example: Karakoul
+        profileimage:
+          type: string
+          example: "011010001"
+      xml:
+        name: Contact
+    AllContacts:
+      type: array
+      example:
+      - name: tasos
+        surname: karakoul
+        profileimage: "1111111"
+      - name: giwrgos
+        surname: gkyzis
+        profileimage: "0000001"
+      xml:
+        name: AllContacts
+      items:
+        $ref: '#/components/schemas/inline_response_200_5'
+    Day:
+      type: array
+      example:
+      - locations: gym
+        time: "13.30"
+        practice: Weight
+      - location: court
+        time: "19.30"
+        practice: Basketball
+      xml:
+        name: Day
+      items:
+        $ref: '#/components/schemas/inline_response_200_8'
+    Practice:
+      type: object
+      properties:
+        locations:
+          type: string
+          example: Court
+        times:
+          type: string
+          example: "19.30"
+        practice:
+          type: string
+          example: Basketball
+      xml:
+        name: Practice
+    MessageEntity:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Hello team!
+        senderId:
+          type: integer
+          example: 1
+    Messages:
+      type: array
+      example:
+      - message: ' Hello team!'
+        senderId: 1
+      - message: Match Day!!! LET'S
+        senderId: 2
+      xml:
+        name: Messages
+      items:
+        $ref: '#/components/schemas/teamid_teamChat_body'
+    Invitation:
+      type: object
+      properties:
+        TeamName:
+          type: string
+          example: "[\"Omadara\",\" Omada2\"]"
+      xml:
+        name: Invitation
+    CreateTeam:
+      type: object
+      properties:
+        TeamName:
+          type: string
+          example: Omadara
+    SendInvitation:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1"
+        teamId:
+          type: string
+          example: "2"
+        invitedUserEmail:
+          type: string
+          example: tasoulis@example.com
+    Workout:
+      type: object
+      properties:
+        workoutfile:
+          type: string
+          format: binary
+          example: !!binary |-
+            V29ya091dEZpbGU=
+      xml:
+        name: Workout
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "000001"
+    DefaultResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Successful operation
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unsucessful operation
+      xml:
+        name: ErrorResponse
+    user_BasicInformation:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Anastasis
+        surname:
+          type: string
+          example: Beltes
+        profileimage:
+          type: string
+          example: "101010111"
+        age:
+          type: integer
+          example: 22
+        weight:
+          type: number
+          example: 80.5
+        height:
+          type: number
+          example: 185.5
+        email:
+          type: string
+          example: tasoulis@example.com
+        phone:
+          type: string
+          example: "6932112312"
+      example:
+        phone: "6932112312"
+        surname: Beltes
+        name: Anastasis
+        weight: 80.5
+        profileimage: "101010111"
+        age: 22
+        email: tasoulis@example.com
+        height: 185.5
+      xml:
+        name: BasicInformation
+    user_body:
+      type: object
+      properties:
+        BasicInformation:
+          $ref: '#/components/schemas/user_BasicInformation'
+        password:
+          type: string
+          example: test1233
+        isAdmin:
+          type: boolean
+          example: true
+        teamdId:
+          type: integer
+          example: 2
+        userId:
+          type: integer
+          example: 1
+      xml:
+        name: User
+    inline_response_200:
+      type: object
+      properties:
+        BasicInformation:
+          $ref: '#/components/schemas/user_BasicInformation'
+        password:
+          type: string
+          example: test1233
+        isAdmin:
+          type: boolean
+          example: true
+        teamdId:
+          type: integer
+          example: 2
+        userId:
+          type: integer
+          example: 1
+      example:
+        password: test1233
+        teamdId: 2
+        isAdmin: true
+        userId: 1
+        BasicInformation:
+          phone: "6932112312"
+          surname: Beltes
+          name: Anastasis
+          weight: 80.5
+          profileimage: "101010111"
+          age: 22
+          email: tasoulis@example.com
+          height: 185.5
+      xml:
+        name: User
+    inline_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unsucessful operation
+      xml:
+        name: ErrorResponse
+    user_login_body:
+      type: object
+      properties:
+        email:
+          type: string
+          example: Testing@mpeltes.gr
+        password:
+          type: string
+          example: testpassword
+    inline_response_200_1:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "000001"
+      example:
+        token: "000001"
+    user_userId_body:
+      type: object
+      properties:
+        BasicInformation:
+          $ref: '#/components/schemas/user_BasicInformation'
+        password:
+          type: string
+          example: test1233
+        isAdmin:
+          type: boolean
+          example: true
+        teamdId:
+          type: integer
+          example: 2
+        userId:
+          type: integer
+          example: 1
+      xml:
+        name: User
+    inline_response_200_2:
+      type: object
+      properties:
+        TeamName:
+          type: string
+          example: "[\"Omadara\",\" Omada2\"]"
+      example:
+        TeamName: "[\"Omadara\",\" Omada2\"]"
+      xml:
+        name: Invitation
+    inline_response_200_3:
+      type: object
+      properties:
+        TeamName:
+          type: string
+          example: Omadara
+      example:
+        TeamName: Omadara
+    inline_response_200_4:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "1"
+        teamId:
+          type: string
+          example: "2"
+        invitedUserEmail:
+          type: string
+          example: tasoulis@example.com
+      example:
+        teamId: "2"
+        userId: "1"
+        invitedUserEmail: tasoulis@example.com
+    inline_response_200_5:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Anastasis
+        surname:
+          type: string
+          example: Karakoul
+        profileimage:
+          type: string
+          example: "011010001"
+      xml:
+        name: Contact
+    inline_response_200_6:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Successful operation
+      example:
+        message: Successful operation
+    inline_response_200_7:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Hello team!
+        senderId:
+          type: integer
+          example: 1
+    teamid_teamChat_body:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Hello team!
+        senderId:
+          type: integer
+          example: 1
+      example:
+        senderId: 1
+        message: Hello team!
+    inline_response_200_8:
+      type: object
+      properties:
+        locations:
+          type: string
+          example: Court
+        times:
+          type: string
+          example: "19.30"
+        practice:
+          type: string
+          example: Basketball
+      xml:
+        name: Practice
+    inline_response_200_9:
+      type: object
+      properties:
+        statfile:
+          type: string
+          format: binary
+          example: !!binary |-
+            U3RhdGlzdGljc0ZpbGU=
+      example:
+        statfile: !!binary |-
+          U3RhdGlzdGljc0ZpbGU=
+      xml:
+        name: Statistics
+    teamId_statistics_body:
+      type: object
+      properties:
+        statfile:
+          type: string
+          format: binary
+          example: !!binary |-
+            U3RhdGlzdGljc0ZpbGU=
+      example:
+        statfile: !!binary |-
+          U3RhdGlzdGljc0ZpbGU=
+      xml:
+        name: Statistics
+    inline_response_200_10:
+      type: object
+      properties:
+        workoutfile:
+          type: string
+          format: binary
+          example: !!binary |-
+            V29ya091dEZpbGU=
+      example:
+        workoutfile: !!binary |-
+          V29ya091dEZpbGU=
+      xml:
+        name: Workout
+    teamId_workout_body:
+      type: object
+      properties:
+        workoutfile:
+          type: string
+          format: binary
+          example: !!binary |-
+            V29ya091dEZpbGU=
+      example:
+        workoutfile: !!binary |-
+          V29ya091dEZpbGU=
+      xml:
+        name: Workout
+  requestBodies:
+    LoginInfo:
+      description: Login Credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: Testing@mpeltes.gr
+              password:
+                type: string
+                example: testpassword
+      required: true
+    PersonalDetails:
+      description: PersonalDetails of the user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              BasicInformation:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Anastasis
+                  surname:
+                    type: string
+                    example: Beltes
+                  profileimage:
+                    type: string
+                    example: "101010111"
+                  age:
+                    type: integer
+                    example: 22
+                  weight:
+                    type: number
+                    example: 80.5
+                  height:
+                    type: number
+                    example: 185.5
+                  email:
+                    type: string
+                    example: tasoulis@example.com
+                  phone:
+                    type: string
+                    example: "6932112312"
+                xml:
+                  name: BasicInformation
+              password:
+                type: string
+                example: test1233
+              isAdmin:
+                type: boolean
+                example: true
+              teamdId:
+                type: integer
+                example: 2
+              userId:
+                type: integer
+                example: 1
+            xml:
+              name: User
+      required: true
+    Day:
+      description: Day of Calendar
+      content:
+        application/json:
+          schema:
+            type: array
+            example:
+            - locations: gym
+              time: "13.30"
+              practice: Weight
+            - location: court
+              time: "19.30"
+              practice: Basketball
+            xml:
+              name: Day
+            items:
+              type: object
+              properties:
+                locations:
+                  type: string
+                  example: Court
+                times:
+                  type: string
+                  example: "19.30"
+                practice:
+                  type: string
+                  example: Basketball
+              xml:
+                name: Practice
+      required: true
+    Statistics:
+      description: Statistcs file
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              statfile:
+                type: string
+                format: binary
+                example: !!binary |-
+                  U3RhdGlzdGljc0ZpbGU=
+            xml:
+              name: Statistics
+      required: true
+    MessageEntity:
+      description: Message Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Hello team!
+              senderId:
+                type: integer
+                example: 1
+      required: true
+    Workout:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              workoutfile:
+                type: string
+                format: binary
+                example: !!binary |-
+                  V29ya091dEZpbGU=
+            xml:
+              name: Workout
+      required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
