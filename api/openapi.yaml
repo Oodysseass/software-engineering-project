@@ -7,9 +7,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/OSOFIKITIS/TeamMate/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://virtserver.swaggerhub.com/ANASTASISBELTES_1/TeamMate/3.0.0
+- url: /
 tags:
 - name: unregister
   description: Unregistered user
