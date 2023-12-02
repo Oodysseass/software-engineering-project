@@ -18,9 +18,9 @@ var app = expressAppConfig.getApp();
 
 // Initialize the Swagger middleware
 if (process.env.NODE_ENV !== "test") {
-    http.createserver(app).listen(serverport, function () {
-        console.log('your server is listening on port %d (http://localhost:%d)', serverport, serverport);
-        console.log('swagger-ui is available on http://localhost:%d/docs', serverport);
+    http.createServer(app).listen(serverPort, function () {
+        console.log('your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
+        console.log('swagger-ui is available on http://localhost:%d/docs', serverPort);
     });
 }
 
