@@ -20,18 +20,19 @@ test.after.always((t) => {
 });
 
 // test for /user/{userId}/team/{teamId}/statistics GET
-test('GET Statistics', async (t) =>{
+test('GET Statistics returns a successful response with the correct data', async (t) =>{
     const {body,statusCode} = await t.context.got("user/1/team/2/statistics");
     // checking the statusCode
-    t.is(statusCode,200)
-    const statFile = body['statfile'] 
+    t.is(statusCode,200);
+    // Checking if the statFile value is as expected for the particular team example
+    const expectedFile = "U3RhdGlzdGljc0ZpbGU=";
     // checking if the statfile is actually a string as expected
     // and the statFile for an example team
-    if (typeof statFile ==='string'){
-        t.is(statFile,"U3RhdGlzdGljc0ZpbGU=");
+    if (t.true(body.hasOwnProperty('statfile')) & typeof body.statfile ==='string'){
+        t.is(body.statfile,expectedFile);
     }else{
         t.fail('The provided file is corrupted');
-    }
+    };
 });
 
 // test for /user/{userId}/team/{teamId}/statistics PUT
