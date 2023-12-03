@@ -3,7 +3,7 @@ const test = require('ava');
 const listen = require('test-listen');
 const got = require('got');
 
-const app = require('../index.js')
+const app = require('../index.js');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
