@@ -47,6 +47,30 @@ test('GET user by function', async (t) => {
 test('GET user', async (t) => {
     const { body, statusCode} = await t.context.got('user/1');
 
+    // expected keys response should have
+    const expectedKeys = {
+        password: 'string',
+        teamdId: 'number',
+        isAdmin: 'boolean',
+        userId: 'number',
+        BasicInformation: 'object',
+    }
+
+    // check if response is truthy
+    t.assert(body)
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in body)
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof body[key], type)
+
+    // check if the retrieved user is the expected user
+    t.is(body.isAdmin, true)
     t.is(body.userId, 1)
+
+    // check status code
     t.is(statusCode, 200)
 })
