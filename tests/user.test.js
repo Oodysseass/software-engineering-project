@@ -73,4 +73,8 @@ test('GET user', async (t) => {
 
     // check status code
     t.is(statusCode, 200)
+
+    // check bad request
+    const error = await t.throwsAsync(async () => await t.context.got('user/asdas'), {instanceOf: got.HTTPError})
+    t.is(error.message, 'Response code 400 (Bad Request)')
 })
