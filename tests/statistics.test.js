@@ -52,3 +52,24 @@ test('GET Statistics', async (t) =>{
     t.is(error.message, "Response code 400 (Bad Request)");
 });
 
+test('GET Statistics by function', async (t) =>{
+    const res = await getStatistics(1,2);
+
+    // expected keys response should have 
+    const expectedKeys = {
+        statfile: 'string'
+    }
+
+    // check if the response is truthy
+    t.assert(res);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in res);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof res[key], type);
+});
+
