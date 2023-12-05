@@ -21,8 +21,8 @@ test.after.always((t) => {
     t.context.server.close(); 
 });
 
-// test for /user/{userId}/team/{teamId}/statistics GET
-test('GET Statistics', async (t) =>{
+// test for /user/{userId}/team/{teamId}/statistics GET - Good Request(200)
+test('GET Statistics - Good Request', async (t) =>{
     const {body,statusCode} = await t.context.got("user/1/team/2/statistics");
 
     // expected keys response should have 
@@ -47,9 +47,12 @@ test('GET Statistics', async (t) =>{
 
     // Checking if the statFile value is as expected for the particular team example
     t.is(body.statfile,"U3RhdGlzdGljc0ZpbGU=");
+});
 
-    // checking bad request
+// test for /user/{userId}/team/{teamId}/statistics GET - Bad Request(400)
+test('GET Statistics - Bad Request', async (t) =>{
     const error = await t.throwsAsync(async () => await t.context.got('user/asdas/team/rand/statistics'), {instanceOf: got.HTTPError});
+    t.is(error.response.statusCode, 400);
     t.is(error.message, "Response code 400 (Bad Request)");
 });
 
