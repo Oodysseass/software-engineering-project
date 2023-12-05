@@ -74,6 +74,7 @@ test('GET Statistics by function', async (t) =>{
         t.is(typeof res[key], type);
 });
 
+// test for /user/{userId}/team/{teamId}/statistics PUT
 test('PUT Statistics by function', async (t) =>{
     const statisticsFile = {
         "statfile" : "randomstatisticsfile"
@@ -97,3 +98,37 @@ test('PUT Statistics by function', async (t) =>{
         t.is(typeof res[key], type);
 });
 
+
+
+test('PUT Statistics - Good Request', async (t) =>{
+    const {body,statusCode} = await t.context.got.put('user/1/team/2/statistics', {
+        // Options for the PUT request
+        body: JSON.stringify({
+            statfile: 'randomstatisticsfile'
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        responseType: 'json', 
+    });
+
+    // expected keys response should have 
+    const expectedKeys = {
+        statfile: 'string'
+    }
+
+    // check if the response is truthy
+    t.assert(body);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in body);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof body[key], type);
+
+    // checking the statusCode
+    t.is(statusCode,200);
+});
