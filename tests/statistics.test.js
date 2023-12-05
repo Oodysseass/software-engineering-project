@@ -6,6 +6,7 @@ const got = require('got');
 
 // importing the server that was created in another module and exported there
 const app = require('../index.js');
+const { getStatistics } = require('../service/UserService.js')
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -20,20 +21,34 @@ test.after.always((t) => {
 });
 
 // test for /user/{userId}/team/{teamId}/statistics GET
-test('GET Statistics returns a successful response with the correct data', async (t) =>{
+test('GET Statistics', async (t) =>{
     const {body,statusCode} = await t.context.got("user/1/team/2/statistics");
+
+    // expected keys response should have 
+    const expectedKeys = {
+        statfile: 'string'
+    }
+
+    // check if the response is truthy
+    t.assert(body);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in body);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof body[key], type);
+
     // checking the statusCode
     t.is(statusCode,200);
-    // Checking if the statFile value is as expected for the particular team example
-    const expectedFile = "U3RhdGlzdGljc0ZpbGU=";
-    // checking if the statfile is actually a string as expected
-    // and the statFile for an example team
-    if (t.true(body.hasOwnProperty('statfile')) & typeof body.statfile ==='string'){
-        t.is(body.statfile,expectedFile);
-    }else{
-        t.fail('The provided file is corrupted');
-    };
-});
 
-// test for /user/{userId}/team/{teamId}/statistics PUT
+    // Checking if the statFile value is as expected for the particular team example
+    t.is(body.statfile,"U3RhdGlzdGljc0ZpbGU=");
+
+    // checking bad request
+    const error = await t.throwsAsync(async () => await t.context.got('user/asdas/team/rand/statistics'), {instanceOf: got.HTTPError});
+    t.is(error.message, "Response code 400 (Bad Request)");
+});
 
