@@ -6,7 +6,8 @@ const got = require('got');
 
 // importing the server that was created in another module and exported there
 const app = require('../index.js');
-const { getStatistics } = require('../service/UserService.js')
+const { getStatistics } = require('../service/UserService.js');
+const { editStatistics } = require('../service/AdminService.js')
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -67,6 +68,29 @@ test('GET Statistics by function', async (t) =>{
     for (let key of Object.keys(expectedKeys))
         t.true(key in res);
 
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof res[key], type);
+});
+
+test('PUT Statistics by function', async (t) =>{
+    const statisticsFile = {
+        "statfile" : "randomstatisticsfile"
+    }
+    const res = await editStatistics(statisticsFile,1,2);
+
+    // expected keys response should have 
+    const expectedKeys = {
+        statfile: 'string'
+    }
+
+    // check if the response is truthy
+    t.assert(res);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in res);
 
     // check if values are the expected type
     for (let [key, type] of Object.entries(expectedKeys))
