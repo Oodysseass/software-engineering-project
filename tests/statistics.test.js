@@ -99,7 +99,7 @@ test('PUT Statistics by function', async (t) =>{
 });
 
 
-
+// test for /user/{userId}/team/{teamId}/statistics PUT - Good Request (200)
 test('PUT Statistics - Good Request', async (t) =>{
     const {body,statusCode} = await t.context.got.put('user/1/team/2/statistics', {
         // Options for the PUT request
@@ -131,4 +131,23 @@ test('PUT Statistics - Good Request', async (t) =>{
 
     // checking the statusCode
     t.is(statusCode,200);
+});
+
+// test for /user/{userId}/team/{teamId}/statistics PUT - Bad Request (400)
+test('PUT Statistics - Bad Request', async (t) =>{
+    const error = await t.throwsAsync(async () => {
+        const res = await t.context.got.put('user/randomid/team/randomid/statistics', {
+            body: JSON.stringify({
+                1: "random"
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+    });
+
+    // Access the properties of the caught error
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, 'Response code 400 (Bad Request)');
 });
