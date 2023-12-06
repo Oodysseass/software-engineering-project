@@ -154,3 +154,59 @@ test('PUT Statistics - Bad Request', async (t) =>{
     t.is(error.response.statusCode, 400);
     t.is(error.message, 'Response code 400 (Bad Request)');
 });
+
+
+test('Get team contacts', async(t) =>{
+    const { body , statusCode }=await t.context.got('user/1/team/2/contacts')
+    // check status code
+    t.is(statusCode,200)
+
+    // getting the first contract
+    const firstelemnt = body[0]
+
+    // check the info 
+    t.is(firstelemnt.name,'tasos')
+    t.is(firstelemnt.surname,'karakoul')
+    t.is(firstelemnt.profileimage,'1111111')
+
+    // getting the second contract
+    const second = body[1]
+
+    // check the info 
+    t.is(second.name,'giwrgos')
+    t.is(second.surname,'gkyzis')
+    t.is(second.profileimage,'0000001')
+
+    // check the keys of return
+    const Keys= ['name', 'surname','profileimage']
+    Keys.forEach((x)=>{t.true(firstelemnt.hasOwnProperty(x))})
+
+
+})
+
+test("Test for get WorkOut 200", async (t) =>{
+    const {body,statusCode} = await t.context.got("user/1/team/2/workout");
+    expectedKeys=['workoutfile']
+
+    t.assert(body)
+    //check the keys of body
+    expectedKeys.forEach((x)=>{t.true(body.hasOwnProperty(x))})
+    //check the value
+    t.is(body.workoutfile,'V29ya091dEZpbGU=')
+    //check type
+    t.is(typeof(body.workoutfile),'string')
+    //check statusCode
+    t.is(statusCode,200)
+
+})
+
+test("Test for get WorkOut 400", async (t)=>{
+    const error = await t.throwsAsync(async () => {
+        const res = await t.context.got('user/randomid/team/randomid/workout');
+    });
+    //check message and statuscode
+    t.is(error.response.statusCode,400)
+    t.is(error.message,'Response code 400 (Bad Request)')
+
+})
+
