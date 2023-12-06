@@ -120,7 +120,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       requestBody:
         description: PersonalDetails of the user
         content:
