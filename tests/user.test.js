@@ -182,3 +182,23 @@ test('PUT user login 200', async (t) => {
     for (let [key, type] of Object.entries(expectedKey))
         t.is(typeof body[key], type)
 });
+
+test('PUT user login 400', async (t) => {
+    // a body for Put request 
+    const requestBody={
+        "email" : "Testing@mpeltes.gr",
+        "password" : "testpassword"
+    }
+
+    // check bad request through bad request
+    const error = await t.throwsAsync(async () => {
+        const res = await t.context.got.put('user/loginERROR',{
+            json: requestBody,
+            responseType: 'json', 
+          });
+    });
+    
+    // check the error response
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, 'Response code 400 (Bad Request)');
+});
