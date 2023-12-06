@@ -92,7 +92,7 @@ test('Get team contacts', async(t) =>{
     t.is(firstelemnt.surname,'karakoul')
     t.is(firstelemnt.profileimage,'1111111')
 
-    // getting the first contract
+    // getting the second contract
     const second = body[1]
 
     // check the info 
