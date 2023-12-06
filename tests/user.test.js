@@ -148,3 +148,57 @@ test("Put user 400" ,async (t)=>{
     t.is(error.response.statusCode, 400);
     t.is(error.message, 'Response code 400 (Bad Request)');
 });
+
+test('PUT user login 200', async (t) => {
+
+    // a body for Put request 
+    const requestBody={
+        "email" : "Testing@mpeltes.gr",
+        "password" : "testpassword"
+    }
+
+    // expected key response should have
+    const expectedKey={
+        "token" : 'string'
+    }
+
+    const {body , statusCode} = await t.context.got.put("user/login", {
+        json: requestBody,
+        responseType: 'json', 
+    })
+
+    //check if response is truthy
+    t.assert(body)
+    //check statuscode==200
+    t.is(statusCode,200)
+    //check the values 
+    t.is(body.token,'000001')
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKey))
+        t.true(key in body)
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKey))
+        t.is(typeof body[key], type)
+});
+
+test('PUT user login 400', async (t) => {
+    // a body for Put request 
+    const requestBody={
+        "email" : "Testing@mpeltes.gr",
+        "password" : "testpassword"
+    }
+
+    // check bad request through bad request
+    const error = await t.throwsAsync(async () => {
+        const res = await t.context.got.put('user/loginERROR',{
+            json: requestBody,
+            responseType: 'json', 
+          });
+    });
+    
+    // check the error response
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, 'Response code 400 (Bad Request)');
+});
