@@ -3,7 +3,7 @@ const test = require('ava');
 const listen = require('test-listen');
 const got = require('got');
 
-const app = require('../index.js')
+const app = require('../index.js');
 const { userUserIdGET } = require('../service/UserService.js')
 
 test.before(async (t) => {
@@ -44,7 +44,7 @@ test('GET user by function', async (t) => {
     t.is(res.userId, 1)
 })
 
-test('GET user', async (t) => {
+test('GET user 200', async (t) => {
     const { body, statusCode} = await t.context.got('user/1');
 
     // expected keys response should have
@@ -74,6 +74,9 @@ test('GET user', async (t) => {
     // check status code
     t.is(statusCode, 200)
 
+})
+
+test('GET user 400', async (t) => {
     // check bad request
     const error = await t.throwsAsync(async () => await t.context.got('user/asdas'), {instanceOf: got.HTTPError})
     t.is(error.message, 'Response code 400 (Bad Request)')
