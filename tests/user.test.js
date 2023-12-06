@@ -3,7 +3,7 @@ const test = require('ava');
 const listen = require('test-listen');
 const got = require('got');
 
-const app = require('../index.js')
+const app = require('../index.js');
 const { userUserIdGET } = require('../service/UserService.js')
 
 test.before(async (t) => {

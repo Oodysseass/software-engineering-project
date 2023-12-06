@@ -633,7 +633,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of team
@@ -641,7 +641,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       responses:
         "200":
           description: Successful operation
@@ -671,7 +671,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of team
@@ -679,7 +679,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       requestBody:
         description: Statistcs file
         content:
@@ -717,7 +717,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of team
@@ -725,7 +725,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       responses:
         "200":
           description: Successful operation
@@ -755,7 +755,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of team
@@ -763,7 +763,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       requestBody:
         content:
           application/json:
