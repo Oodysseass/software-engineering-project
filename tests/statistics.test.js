@@ -7,7 +7,7 @@ const got = require('got');
 // importing the server that was created in another module and exported there
 const app = require('../index.js');
 const { getStatistics } = require('../service/UserService.js');
-const { editStatistics } = require('../service/AdminService.js')
+const { editStatistics, sendInvitation } = require('../service/AdminService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -210,3 +210,35 @@ test("Test for get WorkOut 400", async (t)=>{
 
 })
 
+// test for /user/{userId}/team/{teamId}/sendInvitation PUT
+test("PUT SendInvitation by function", async (t) =>{
+    // construct the input of the function for clarity
+    const invitation = {
+        "teamId" : "2",
+        "userId" : "6",
+        "invitedUserEmail" : "randomuser@example.com"
+    };
+    const res = await sendInvitation(invitation.teamId,invitation.userId,invitation.invitedUserEmail);
+
+    // expected keys response should have 
+    const expectedKeys = {
+        "teamId" : 'string',
+        "userId" : 'string',
+        "invitedUserEmail" : 'string'
+    };
+
+    // check if the response is truthy
+    t.assert(res);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in res);
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof res[key], type);
+});
+
+//test("PUT SendInvitation - Good Request")
+
+//test("PUT SendInvitation - Bad Request")
