@@ -188,7 +188,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamName
         in: query
         description: the name of the created team
@@ -227,7 +227,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of team
@@ -235,7 +235,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: invitedUserEmail
         in: query
         description: the email of the invited user
@@ -274,7 +274,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of the team.
@@ -282,7 +282,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       responses:
         "200":
           description: Successful operation
@@ -325,7 +325,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of the team.
@@ -333,7 +333,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teammateUserId
         in: path
         description: the id of the teammate that the user wants to see his information.
@@ -341,7 +341,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       responses:
         "200":
           description: Successful operation
@@ -371,7 +371,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teamId
         in: path
         description: the id of the team.
@@ -379,7 +379,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       - name: teammateUserId
         in: path
         description: the id of the team member that the admin wants to kick.
@@ -387,7 +387,7 @@ paths:
         style: simple
         explode: false
         schema:
-          type: string
+          type: integer
       responses:
         "200":
           description: Successfully kicked teammate
