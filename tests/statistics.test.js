@@ -277,8 +277,9 @@ test("PUT SendInvitation - Good Request", async (t) =>{
 
 // test for /user/{userId}/team/{teamId}/sendInvitation PUT - Bad Request(200)
 test("PUT SendInvitation - Bad Request", async (t) =>{
-    const error = await t.throwsAsync(async () => {
-        const res = await t.context.got.put('user/randomid/team/randomid/sendInvitation', {
+    // creating an error by specifying wrong path parameters
+    const error1 = await t.throwsAsync(async () => {
+        const res1 = await t.context.got.put('user/randomid/team/randomid/sendInvitation', {
             // Options for the PUT request
             searchParams: {
                 invitedUserEmail: 'randomuser@example.com',
@@ -291,6 +292,38 @@ test("PUT SendInvitation - Bad Request", async (t) =>{
     });
 
     // Access the properties of the caught error
-    t.is(error.response.statusCode, 400);
-    t.is(error.message, 'Response code 400 (Bad Request)');
+    t.is(error1.response.statusCode, 400);
+    t.is(error1.message, 'Response code 400 (Bad Request)');
+
+    //creating a second way of error -> no provided email as a query parameter
+    const error2 = await t.throwsAsync(async () => {
+        const res2 = await t.context.got.put('user/6/team/1/sendInvitation', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+    });
+
+    // Access the properties of the caught error
+    t.is(error2.response.statusCode, 400);
+    t.is(error2.message, 'Response code 400 (Bad Request)');
+
+    //creating a second way of error -> no provided email as a query parameter
+    const error3 = await t.throwsAsync(async () => {
+        const res3 = await t.context.got.put('user/6/team/1/sendInvitation', {
+            // Options for the PUT request
+            searchParams: {
+                wrongField: 'randomuser@example.com',
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+    });
+
+    // Access the properties of the caught error
+    t.is(error3.response.statusCode, 400);
+    t.is(error3.message, 'Response code 400 (Bad Request)');
 });
