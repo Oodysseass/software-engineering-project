@@ -239,6 +239,41 @@ test("PUT SendInvitation by function", async (t) =>{
         t.is(typeof res[key], type);
 });
 
-//test("PUT SendInvitation - Good Request")
+// test for /user/{userId}/team/{teamId}/sendInvitation PUT - Good Request(200)
+test("PUT SendInvitation - Good Request", async (t) =>{
+    const {body,statusCode} = await t.context.got.put('user/6/team/2/sendInvitation', {
+        // Options for the PUT request
+        searchParams: {
+            invitedUserEmail: 'randomuser@example.com',
+        },
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        responseType: 'json', 
+    });
 
+    // expected keys response should have 
+    const expectedKeys = {
+        "teamId" : 'string',
+        "userId" : 'string',
+        "invitedUserEmail" : 'string'
+    };
+
+    // check if the response is truthy
+    t.assert(body);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in body);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof body[key], type);
+
+    // checking the statusCode
+    t.is(statusCode,200);
+});
+
+// test for /user/{userId}/team/{teamId}/sendInvitation PUT - Bad Request(200)
 //test("PUT SendInvitation - Bad Request")
