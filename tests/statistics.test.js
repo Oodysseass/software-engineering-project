@@ -7,7 +7,7 @@ const got = require('got');
 // importing the server that was created in another module and exported there
 const app = require('../index.js');
 const { getStatistics } = require('../service/UserService.js');
-const { editStatistics, sendInvitation } = require('../service/AdminService.js');
+const { editStatistics, sendInvitation, editCalendar } = require('../service/AdminService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -222,8 +222,8 @@ test("PUT SendInvitation by function", async (t) =>{
 
     // expected keys response should have 
     const expectedKeys = {
-        "teamId" : 'string',
-        "userId" : 'string',
+        "teamId" : 'number',
+        "userId" : 'number',
         "invitedUserEmail" : 'string'
     };
 
@@ -254,8 +254,8 @@ test("PUT SendInvitation - Good Request", async (t) =>{
 
     // expected keys response should have 
     const expectedKeys = {
-        "teamId" : 'string',
-        "userId" : 'string',
+        "teamId" : 'number',
+        "userId" : 'number',
         "invitedUserEmail" : 'string'
     };
 
@@ -326,4 +326,40 @@ test("PUT SendInvitation - Bad Request", async (t) =>{
     // Access the properties of the caught error
     t.is(error3.response.statusCode, 400);
     t.is(error3.message, 'Response code 400 (Bad Request)');
+});
+
+// test for /user/{userId}/team/{teamId}/calendarEdit GET
+test("GET CalendarEdit by function", async (t) =>{
+    const calendar_params = {
+        "teamid" : 2,
+        "userid" : 6,
+    };
+    const res = await editCalendar(calendar_params.userid,calendar_params.teamid);
+
+    // expected keys response should have 
+    const expectedKeys = [{
+        "location" : 'string',
+        "time" : 'string',
+        "practice" : 'string'
+        }];
+
+    // check if the response is truthy
+    t.assert(res);
+
+    // in the following loops I check if all of the items that can be found in
+    // the calendar and returned with the get request are of the expected form
+
+    // Check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys)){
+        for (let i; i < res.length; i++) {
+            t.true(key in res[i])
+        }
+    };
+    
+    // Check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys)){
+        for (let i; i < res.length; i++) {
+            t.is(typeof res[i][key],type)
+        }
+    };
 });

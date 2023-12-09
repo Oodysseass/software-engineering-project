@@ -13,7 +13,7 @@ exports.editCalendar = function(userid,teamid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "locations" : "gym",
+  "location" : "gym",
   "time" : "13.30",
   "practice" : "Weight"
 }, {
@@ -145,8 +145,8 @@ exports.sendInvitation = function(userId,teamId,invitedUserEmail) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "teamId" : "2",
-  "userId" : "1",
+  "teamId" :  2,
+  "userId" :  1,
   "invitedUserEmail" : "tasoulis@example.com"
 };
     if (Object.keys(examples).length > 0) {

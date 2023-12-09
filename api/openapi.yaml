@@ -533,7 +533,7 @@ paths:
               schema:
                 type: array
                 example:
-                - locations: gym
+                - location: gym
                   time: "13.30"
                   practice: Weight
                 - location: court
@@ -580,7 +580,7 @@ paths:
             schema:
               type: array
               example:
-              - locations: gym
+              - location: gym
                 time: "13.30"
                 practice: Weight
               - location: court
@@ -599,7 +599,7 @@ paths:
               schema:
                 type: array
                 example:
-                - locations: gym
+                - location: gym
                   time: "13.30"
                   practice: Weight
                 - location: court
@@ -883,7 +883,7 @@ components:
     Day:
       type: array
       example:
-      - locations: gym
+      - location: gym
         time: "13.30"
         practice: Weight
       - location: court
@@ -896,7 +896,7 @@ components:
     Practice:
       type: object
       properties:
-        locations:
+        location:
           type: string
           example: Court
         times:
@@ -945,11 +945,11 @@ components:
       type: object
       properties:
         userId:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         teamId:
-          type: string
-          example: "2"
+          type: integer
+          example: 2
         invitedUserEmail:
           type: string
           example: tasoulis@example.com
@@ -1197,7 +1197,7 @@ components:
     inline_response_200_8:
       type: object
       properties:
-        locations:
+        location:
           type: string
           example: Court
         times:
@@ -1333,7 +1333,7 @@ components:
           schema:
             type: array
             example:
-            - locations: gym
+            - location: gym
               time: "13.30"
               practice: Weight
             - location: court
@@ -1344,7 +1344,7 @@ components:
             items:
               type: object
               properties:
-                locations:
+                location:
                   type: string
                   example: Court
                 times:
