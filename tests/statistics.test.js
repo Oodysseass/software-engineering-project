@@ -276,4 +276,21 @@ test("PUT SendInvitation - Good Request", async (t) =>{
 });
 
 // test for /user/{userId}/team/{teamId}/sendInvitation PUT - Bad Request(200)
-//test("PUT SendInvitation - Bad Request")
+test("PUT SendInvitation - Bad Request", async (t) =>{
+    const error = await t.throwsAsync(async () => {
+        const res = await t.context.got.put('user/randomid/team/randomid/sendInvitation', {
+            // Options for the PUT request
+            searchParams: {
+                invitedUserEmail: 'randomuser@example.com',
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+    });
+
+    // Access the properties of the caught error
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, 'Response code 400 (Bad Request)');
+});
