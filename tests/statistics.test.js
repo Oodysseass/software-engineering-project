@@ -6,7 +6,7 @@ const got = require('got');
 
 // importing the server that was created in another module and exported there
 const app = require('../index.js');
-const { getStatistics } = require('../service/UserService.js');
+const { getStatistics, getTeammateInfo } = require('../service/UserService.js');
 const { editStatistics, sendInvitation, getCalendar } = require('../service/AdminService.js');
 
 // before testing, intializing the server and the request making
@@ -404,4 +404,40 @@ test('GET CalendarEdit - Bad Request', async (t) =>{
     // check message and status code
     t.is(error.response.statusCode, 400);
     t.is(error.message, "Response code 400 (Bad Request)");
+});
+
+
+// test for /user/{userId}/team/{teamId}/contacts/{teammateUserId}
+test('GET TeammateInfo by function', async (t) =>{
+    // concentrated the path parameters when call by function
+    const getInfo = {
+        'usedId' : 2,
+        'teamId' : 6,
+        'teammateUserId':12
+    };
+    const res = await getTeammateInfo(getInfo.usedId,getInfo.teamId,getInfo.teammateUserId);
+
+    // expected keys response should have 
+    const expectedKeys = {
+        "phone" : 'string',
+        "surname" : 'string',
+        "name" : 'string',
+        "weight" : 'number',
+        "profileimage" : 'string',
+        "age" : 'number',
+        "email" : 'string',
+        "height" : 'number'
+      };
+
+    // check if the response is truthy
+    t.assert(res);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in res);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof res[key], type);
 });
