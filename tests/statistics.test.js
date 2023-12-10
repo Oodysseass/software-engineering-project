@@ -441,3 +441,35 @@ test('GET TeammateInfo by function', async (t) =>{
     for (let [key, type] of Object.entries(expectedKeys))
         t.is(typeof res[key], type);
 });
+
+// test for /user/{userId}/team/{teamId}/contacts/{teammateUserId} GET - Good Request(200)
+test('GET Teammate Info - Good Request', async (t) =>{
+    const {body,statusCode} = await t.context.got("user/2/team/6/contacts/12");
+
+    // expected keys response should have 
+    const expectedKeys =  {
+        "phone" : 'string',
+        "surname" : 'string',
+        "name" : 'string',
+        "weight" : 'number',
+        "profileimage" : 'string',
+        "age" : 'number',
+        "email" : 'string',
+        "height" : 'number'
+      };
+
+    // check if the response is truthy
+    t.assert(body);
+
+    // checking the statusCode
+    t.is(statusCode,200);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys))
+        t.true(key in body);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys))
+        t.is(typeof body[key], type);
+});
