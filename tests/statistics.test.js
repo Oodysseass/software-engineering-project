@@ -443,7 +443,7 @@ test('GET TeammateInfo by function', async (t) =>{
 });
 
 // test for /user/{userId}/team/{teamId}/contacts/{teammateUserId} GET - Good Request(200)
-test('GET Teammate Info - Good Request', async (t) =>{
+test('GET TeammateInfo - Good Request', async (t) =>{
     const {body,statusCode} = await t.context.got("user/2/team/6/contacts/12");
 
     // expected keys response should have 
@@ -472,4 +472,12 @@ test('GET Teammate Info - Good Request', async (t) =>{
     // check if values are the expected type
     for (let [key, type] of Object.entries(expectedKeys))
         t.is(typeof body[key], type);
+});
+
+// test for /user/{userId}/team/{teamId}/contacts/{teammateUserId} GET - Bad Request(400)
+test('GET TeammateInfo - Bad Request', async (t) =>{
+    const error = await t.throwsAsync(async () => await t.context.got('user/random/team/random/contacts/random'), {instanceOf: got.HTTPError});
+    // check message and status code
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, "Response code 400 (Bad Request)");
 });
