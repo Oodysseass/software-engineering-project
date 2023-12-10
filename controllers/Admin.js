@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var Admin = require('../service/AdminService');
 
-module.exports.editCalendar = function editCalendar (req, res, next, userid, teamid) {
-  Admin.editCalendar(userid, teamid)
+module.exports.getCalendar = function getCalendar (req, res, next, userid, teamid) {
+  Admin.getCalendar(userid, teamid)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -13,8 +13,8 @@ module.exports.editCalendar = function editCalendar (req, res, next, userid, tea
     });
 };
 
-module.exports.editCalendar_1 = function editCalendar_1 (req, res, next, body, userid, teamid) {
-  Admin.editCalendar_1(body, userid, teamid)
+module.exports.editCalendar = function editCalendar (req, res, next, body, userid, teamid) {
+  Admin.editCalendar(body, userid, teamid)
     .then(function (response) {
       utils.writeJson(res, response);
     })

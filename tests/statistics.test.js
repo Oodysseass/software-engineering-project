@@ -7,7 +7,7 @@ const got = require('got');
 // importing the server that was created in another module and exported there
 const app = require('../index.js');
 const { getStatistics } = require('../service/UserService.js');
-const { editStatistics, sendInvitation, editCalendar } = require('../service/AdminService.js');
+const { editStatistics, sendInvitation, getCalendar } = require('../service/AdminService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -334,7 +334,7 @@ test("GET CalendarEdit by function", async (t) =>{
         "teamid" : 2,
         "userid" : 6,
     };
-    const res = await editCalendar(calendar_params.userid,calendar_params.teamid);
+    const res = await getCalendar(calendar_params.userid,calendar_params.teamid);
 
     // expected keys response should have 
     const expectedKeys = [{
@@ -352,14 +352,48 @@ test("GET CalendarEdit by function", async (t) =>{
     // Check if all the expected keys are in the response object
     for (let key of Object.keys(expectedKeys)){
         for (let i; i < res.length; i++) {
-            t.true(key in res[i])
+            t.true(key in res[i]);
         }
     };
     
     // Check if values are the expected type
     for (let [key, type] of Object.entries(expectedKeys)){
         for (let i; i < res.length; i++) {
-            t.is(typeof res[i][key],type)
+            t.is(typeof res[i][key],type);
+        }
+    };
+});
+
+// test for /user/{userId}/team/{teamId}/calendarEdit GET - Good Request(200)
+test("GET CalendarEdit - Good Request", async (t) =>{
+    const {body,statusCode} = await t.context.got("user/1/team/2/calendarEdit");
+
+    // expected keys response should have 
+    const expectedKeys = [{
+        "location" : 'string',
+        "time" : 'string',
+        "practice" : 'string'
+        }];
+
+    // check if the response is truthy
+    t.assert(body);
+    // checking the statusCode
+    t.is(statusCode,200);
+
+    // in the following loops I check if all of the items that can be found in
+    // the calendar and returned with the get request are of the expected form
+
+    // Check if all the expected keys are in the response object
+    for (let key of Object.keys(expectedKeys)){
+        for (let i; i < body.length; i++) {
+            t.true(key in body[i]);
+        }
+    };
+    
+    // Check if values are the expected type
+    for (let [key, type] of Object.entries(expectedKeys)){
+        for (let i; i < body.length; i++) {
+            t.is(typeof body[i][key],type);
         }
     };
 });

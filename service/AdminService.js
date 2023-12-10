@@ -2,14 +2,14 @@
 
 
 /**
- * edit calendar by admin
+ * get calendar by admin
  * FR7 - The admin must be able to edit calendar 
  *
  * userid Integer 
  * teamid Integer 
  * returns List
  **/
-exports.editCalendar = function(userid,teamid) {
+exports.getCalendar = function(userid,teamid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
@@ -39,11 +39,11 @@ exports.editCalendar = function(userid,teamid) {
  * teamid Integer 
  * returns List
  **/
-exports.editCalendar_0 = function(body,userid,teamid) {
+exports.editCalendar = function(body,userid,teamid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "locations" : "gym",
+  "location" : "gym",
   "time" : "13.30",
   "practice" : "Weight"
 }, {

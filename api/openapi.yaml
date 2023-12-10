@@ -506,13 +506,14 @@ paths:
     get:
       tags:
       - admin
-      summary: edit calendar by admin
+      summary: get calendar by admin
       description: |
         FR7 - The admin must be able to edit calendar
-      operationId: EditCalendar
+      operationId: getCalendar
       parameters:
       - name: userid
         in: path
+        description: The ID of the user
         required: true
         style: simple
         explode: false
@@ -520,6 +521,7 @@ paths:
           type: integer
       - name: teamid
         in: path
+        description: The ID of the team
         required: true
         style: simple
         explode: false
