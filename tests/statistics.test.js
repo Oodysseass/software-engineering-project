@@ -397,3 +397,11 @@ test("GET CalendarEdit - Good Request", async (t) =>{
         }
     };
 });
+
+// test for /user/{userId}/team/{teamId}/calendarEdit GET - Bad Request(400)
+test('GET CalendarEdit - Bad Request', async (t) =>{
+    const error = await t.throwsAsync(async () => await t.context.got('user/random/team/random/calendarEdit'), {instanceOf: got.HTTPError});
+    // check message and status code
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, "Response code 400 (Bad Request)");
+});
