@@ -3,7 +3,6 @@ const got = require('got');
 
 const { setupServer } = require('../utils/testServer.js')
 const { userUserIdGET } = require('../service/UserService.js')
-
 test.before(async (t) => {
     t.context = await setupServer()
 });
@@ -135,3 +134,4 @@ test("Put user 400" ,async (t)=>{
     t.is(error.response.statusCode, 400);
     t.is(error.message, 'Response code 400 (Bad Request)');
 });
+
