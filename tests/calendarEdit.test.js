@@ -152,3 +152,38 @@ test("PUT calendar 200", async (t) => {
     // check if response code is correct
     t.is(statusCode, 200)
 })
+
+test("PUT calendar 400", async (t) => {
+    // wrong teamid
+    let error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/randomid/calendarEdit', {
+            json: calendarFile
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong userid
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/randomid/team/2/calendarEdit', {
+            json: calendarFile
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong both ids
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/randomid/team/randomid/calendarEdit', {
+            json: calendarFile
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+})
