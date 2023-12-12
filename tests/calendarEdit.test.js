@@ -121,3 +121,34 @@ test("Edit calendar by function", async (t) => {
     // check if the calander is the expected calander
     t.deepEqual(res, calendarFile)
 })
+
+test("PUT calendar 200", async (t) => {
+    const { body, statusCode } = await t.context.got.put("user/1/team/2/calendarEdit",
+        {
+            json: calendarFile
+        })
+
+    // check if response is truthy
+    t.assert(body)
+
+    // check if res is the expected length
+    t.is(body.length, calendarFile.length)
+
+    // check if all the expected keys are in the response object
+    for (let item in calendarFile) {
+        for (let key of Object.keys(calendarFile[item]))
+            t.true(key in body[item])
+    }
+
+    // check if values are the expected type
+    for (let item in calendarFile) {
+        for (let [key, value] of Object.entries(calendarFile[item]))
+            t.is(typeof body[item][key], typeof value)
+    }
+
+    // check if the calander is the expected calander
+    t.deepEqual(body, calendarFile)
+
+    // check if response code is correct
+    t.is(statusCode, 200)
+})
