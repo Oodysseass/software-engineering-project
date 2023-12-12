@@ -41,3 +41,28 @@ test("Test for get WorkOut 400", async (t)=>{
     t.is(error.message,'Response code 400 (Bad Request)')
 
 });
+
+test("PUT workout 200", async (t) => {
+    const workoutFile = "V29ya091dEZpbGU="
+    const { body, statusCode } = await t.context.got.put("user/1/team/2/workout",
+        {
+            json: {
+                workoutfile: workoutFile
+            }
+        })
+
+    // check if response is truthy
+    t.assert(body)
+
+    // check if body has the workoutfile
+    t.true("workoutfile" in body)
+
+    // check if the file is of right type
+    t.is(typeof body['workoutfile'], typeof workoutFile)
+
+    // check if the file is the expected file
+    t.is(body.workoutfile, workoutFile)
+    
+    // check if response code is correct
+    t.is(statusCode, 200)
+})
