@@ -86,30 +86,43 @@ test("PUT workout 200", async (t) => {
 })
 
 test("PUT workout 400", async (t) => {
+    const workoutFile = "V29ya091dEZpbGU="
     // wrong teamid
     let error = await t.throwsAsync(async () => {
-        await t.context.got('user/1/team/randomid/workout')
+        await t.context.got.put('user/1/team/randomid/workout', {
+            json: {
+                workoutfile: workoutFile
+            }
+        })
     })
 
     // check message and statuscode
-    t.is(error.response.statusCode,400)
-    t.is(error.message,'Response code 400 (Bad Request)')
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
 
     // wrong userid
     error = await t.throwsAsync(async () => {
-        await t.context.got('user/randomid/team/2/workout')
+        await t.context.got.put('user/randomid/team/2/workout', {
+            json: {
+                workoutfile: workoutFile
+            }
+        })
     })
 
     // check message and statuscode
-    t.is(error.response.statusCode,400)
-    t.is(error.message,'Response code 400 (Bad Request)')
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
 
     // wrong both ids
     error = await t.throwsAsync(async () => {
-        await t.context.got('user/randomid/team/randomid/workout')
+        await t.context.got.put('user/randomid/team/randomid/workout', {
+            json: {
+                workoutfile: workoutFile
+            }
+        })
     })
 
     // check message and statuscode
-    t.is(error.response.statusCode,400)
-    t.is(error.message,'Response code 400 (Bad Request)')
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
 })
