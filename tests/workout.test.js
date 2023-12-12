@@ -3,6 +3,7 @@ const got = require('got');
 
 // importing the server that was created in another module and exported there
 const { setupServer } = require('../utils/testServer.js');
+const { editWorkout } = require('../service/AdminService.js')
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -41,6 +42,23 @@ test("Test for get WorkOut 400", async (t)=>{
     t.is(error.message,'Response code 400 (Bad Request)')
 
 });
+
+test("Edit workout by function", async (t) => {
+    const workoutFile = "V29ya091dEZpbGU="
+    const res = await editWorkout()
+
+    // check if response is truthy
+    t.assert(res)
+
+    // check if body has the workoutfile
+    t.true("workoutfile" in res)
+
+    // check if the file is of right type
+    t.is(typeof res['workoutfile'], typeof workoutFile)
+
+    // check if the file is the expected file
+    t.is(res.workoutfile, workoutFile)
+})
 
 test("PUT workout 200", async (t) => {
     const workoutFile = "V29ya091dEZpbGU="
