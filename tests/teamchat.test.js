@@ -24,7 +24,6 @@ test("Get TeamChat 200", async (t)=>{
     
     const message1=body[0]
     const message2=body[1]
-    console.log(message2.message)
     const JsonMessage ={
         "message" : "string",
         "senderId": "number"
@@ -39,6 +38,11 @@ test("Get TeamChat 200", async (t)=>{
         t.is(typeof(message1[key]), type)
         t.is(typeof(message2[key]), type)
     }
-        
-    
+
+})
+
+test("Get TeamChat 400 " , async (t)=>{
+    //check bad request
+    const error = await t.throwsAsync(async () => await t.context.got('user/randomID/team/randomTeamID/teamChat'), {instanceOf: got.HTTPError})
+    t.is(error.message, 'Response code 400 (Bad Request)')
 })
