@@ -48,6 +48,7 @@ test("Get TeamChat 400 " , async (t)=>{
     //check bad request
     const error = await t.throwsAsync(async () => await t.context.got('user/randomID/team/randomTeamID/teamChat'), {instanceOf: got.HTTPError})
     t.is(error.message, 'Response code 400 (Bad Request)')
+    t.is(error.response.statusCode, 400);
 })
 
 test("Get TeamChat by function", async (t)=>{
@@ -92,5 +93,22 @@ test("Put TeamChat 200",async (t)=> {
         // check if values are the expected type
     for (let [key, type] of Object.entries(JsonMessage))
         t.is(typeof body[key], type);
+})
 
+test("Put TeamChat 400", async (t)=>{
+    const error = await t.throwsAsync(async () => {
+        const res = await t.context.got.put('user/randomid/team/randomteamid/teamchat', {
+            body: JSON.stringify({
+                wrong: "wrong"
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+    });
+
+    // Access the properties of the caught error
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, 'Response code 400 (Bad Request)');
 })
