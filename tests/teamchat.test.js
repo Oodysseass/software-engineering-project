@@ -3,7 +3,7 @@ const got = require('got');
 
 const { setupServer } = require('../utils/testServer.js')
 const { getTeamChat } = require('../service/UserService.js')
-
+const {sendTeamChatMessage}=require('../service/UserService.js')
 test.before(async (t) => {
     t.context = await setupServer()
 });
@@ -111,4 +111,19 @@ test("Put TeamChat 400", async (t)=>{
     // Access the properties of the caught error
     t.is(error.response.statusCode, 400);
     t.is(error.message, 'Response code 400 (Bad Request)');
+})
+
+test("Put TeamChat call by function", async (t)=>{
+    body={message: "Hello Team",
+            senderId : 1}
+    const res =await sendTeamChatMessage(body , 1 ,2 )
+    //check body
+    t.assert(res)
+    //check the keys
+    for (let key of Object.keys(JsonMessage))
+        t.true(key in res)
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(JsonMessage))
+        t.is(typeof res[key], type);
+
 })
