@@ -2,6 +2,7 @@ const test = require('ava');
 const got = require('got');
 
 const { setupServer } = require('../utils/testServer.js')
+const { getTeamChat } = require('../service/UserService.js')
 
 test.before(async (t) => {
     t.context = await setupServer()
@@ -45,4 +46,29 @@ test("Get TeamChat 400 " , async (t)=>{
     //check bad request
     const error = await t.throwsAsync(async () => await t.context.got('user/randomID/team/randomTeamID/teamChat'), {instanceOf: got.HTTPError})
     t.is(error.message, 'Response code 400 (Bad Request)')
+})
+
+test("Get TeamChat by function", async (t)=>{
+    const res  = await getTeamChat(1,2)
+
+    t.assert(res)
+
+    const message1=res[0]
+    const message2=res[1]
+    const JsonMessage ={
+        "message" : "string",
+        "senderId": "number"
+    }
+    // check keys in my messages
+    for(let key of Object.keys(JsonMessage)){
+        t.true(key in message1)
+        t.true(key in message2)
+    }
+    //check the type in message's object
+    for(let [key,type] of Object.entries(JsonMessage)){
+        t.is(typeof(message1[key]), type)
+        t.is(typeof(message2[key]), type)
+    }
+
+
 })
