@@ -3,7 +3,7 @@ const got = require('got');
 
 const { setupServer } = require('../utils/testServer.js')
 const { userUserIdGET } = require('../service/UserService.js')
-
+const {updateUser} = require ('../service/UserService.js')
 test.before(async (t) => {
     t.context = await setupServer()
 });
@@ -135,3 +135,27 @@ test("Put user 400" ,async (t)=>{
     t.is(error.response.statusCode, 400);
     t.is(error.message, 'Response code 400 (Bad Request)');
 });
+
+test(' Put user by function ' , async (t) =>{
+    ExpectedRes={
+        password : "string",
+        teamdId : "number",
+        isAdmin :"boolean",
+        userId : "number",
+        BasicInformation : 'object'
+        
+    }
+    const res = await updateUser(ExpectedRes,1)
+
+    //check response
+    t.assert(res)
+    // checks the keys
+    ExpectedKeys =[ "password","teamdId","isAdmin","userId", "BasicInformation"]
+    ExpectedKeys.forEach((x)=>{t.true(res.hasOwnProperty(x))})
+
+    //checks the type
+    for (let [key, type] of Object.entries(ExpectedRes))
+    t.is(typeof res[key], type);
+})
+
+
