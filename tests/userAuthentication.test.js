@@ -3,6 +3,7 @@ const test = require('ava');
 const { setupServer } = require('../utils/testServer.js')
 const { createUser } = require('../service/UnregisterService.js')
 const { loginUser } = require('../service/UserService.js');
+const { createTeam } = require('../service/UserService.js');
 
 test.before(async (t) => {
     t.context = await setupServer()
@@ -13,7 +14,7 @@ test.after.always((t) => {
 })
 
 test('PUT user login call by function', async(t) =>{
-    
+    // a body for Put request 
     const requestBody={
         "email" : "Testing@mpeltes.gr",
         "password" : "testpassword"
@@ -157,4 +158,37 @@ test('POST user 200', async (t) => {
 
     // check if the created user is the expected user
     t.deepEqual(body, expectedUser)
+})
+
+const expectedTeam = {
+    "TeamName" : "Omadara"
+};
+
+const teamKeys = {
+    "TeamName": "string"
+};
+
+test('POST create team by function', async (t) => {
+
+    //input for function
+    const team = {
+        "userId" : "1",
+        "teamName" : "Omadara"
+    }
+
+    const res = await createTeam(team.userId,team.teamName)
+
+    // check if response is truthy
+    t.assert(res)
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(teamKeys))
+        t.true(key in res)
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(teamKeys))
+        t.is(typeof res[key], type)
+
+    // check if the created user is the expected user
+    t.deepEqual(res, expectedTeam)
 })
