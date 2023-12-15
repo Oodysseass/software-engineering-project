@@ -161,11 +161,11 @@ test('POST user 200', async (t) => {
 })
 
 const expectedTeam = {
-    "TeamName" : "Omadara"
+    TeamName : "Omadara"
 };
 
 const teamKeys = {
-    "TeamName": "string"
+    TeamName: "string"
 };
 
 test('POST create team by function', async (t) => {
@@ -191,4 +191,32 @@ test('POST create team by function', async (t) => {
 
     // check if the created user is the expected user
     t.deepEqual(res, expectedTeam)
+})
+
+test('POST create team 200', async (t) => {
+
+    const query = {
+        teamName: "string"
+    };
+
+    const { body, statusCode } = await t.context.got.post('user/1/createTeam', {
+        searchParams: query,
+    });
+
+    // check if response is truthy
+    t.assert(body)
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(teamKeys))
+        t.true(key in body)
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(teamKeys))
+        t.is(typeof body[key], type)
+
+    // check if the created user is the expected user
+    t.deepEqual(body, expectedTeam)
+
+    // checking the statusCode
+    t.is(statusCode,200);
 })
