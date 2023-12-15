@@ -68,6 +68,13 @@ test('GET invitation 200', async(t) =>{
 
 });
 
+test('GET invitation 400', async(t) =>{
+    const error = await t.throwsAsync(async () => await t.context.got('user/random/invitations'), {instanceOf: got.HTTPError});
+    // check message and status code
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, "Response code 400 (Bad Request)");
+});
+
 // test for /user/{userId}/team/{teamId}/sendInvitation PUT
 test("PUT SendInvitation by function", async (t) =>{
     // construct the input of the function for clarity
