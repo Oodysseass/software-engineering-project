@@ -32,9 +32,6 @@ const teamContactKeys = {
 test("Get contacts by function  ", async(t)=>{
     const res = await getContacts(1,2)
 
-    //check status code
-    t.is(statusCode,200)
-    
     // getting the first contract
     const firstelemnt = res[0]
 
@@ -83,6 +80,13 @@ test('Get team contacts', async(t) =>{
     Keys.forEach((x)=>{t.true(firstelement.hasOwnProperty(x))})
 
 
+});
+
+test('GET team contacts 400', async(t) =>{
+    const error = await t.throwsAsync(async () => await t.context.got('user/random/team/random/contacts'), {instanceOf: got.HTTPError});
+    // check message and status code
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, "Response code 400 (Bad Request)");
 });
 
 // test for /user/{userId}/team/{teamId}/contacts/{teammateUserId}
