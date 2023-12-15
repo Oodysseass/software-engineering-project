@@ -4,6 +4,7 @@ const got = require('got');
 // importing the server that was created in another module and exported there
 const { setupServer } = require('../utils/testServer.js');
 const {sendInvitation} = require('../service/AdminService.js');
+const { seeInvitation } = require('../service/UserService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -21,6 +22,27 @@ const invitationKeys = {
     "userId" : 'number',
     "invitedUserEmail" : 'string'
 };
+
+test('GET invitation by function', async(t) =>{
+    const userId = 1;
+    const res = await seeInvitation(userId);
+    
+    const invitationKeys = {
+        TeamName: 'string'
+    };
+
+    // check if the response is truthy
+    t.assert(res);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(invitationKeys))
+        t.true(key in res);
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(invitationKeys))
+        t.is(typeof res[key], type);
+
+});
 
 // test for /user/{userId}/team/{teamId}/sendInvitation PUT
 test("PUT SendInvitation by function", async (t) =>{
