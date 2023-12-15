@@ -44,6 +44,30 @@ test('GET invitation by function', async(t) =>{
 
 });
 
+test('GET invitation 200', async(t) =>{
+
+    const { body , statusCode }=await t.context.got('user/1/invitations')
+    
+    const invitationKeys = {
+        TeamName: 'string'
+    };
+
+    // check if the response is truthy
+    t.assert(body);
+
+    // checking the statusCode
+    t.is(statusCode,200);
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(invitationKeys))
+        t.true(key in body);
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(invitationKeys))
+        t.is(typeof body[key], type);
+
+});
+
 // test for /user/{userId}/team/{teamId}/sendInvitation PUT
 test("PUT SendInvitation by function", async (t) =>{
     // construct the input of the function for clarity
