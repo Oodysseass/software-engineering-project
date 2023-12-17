@@ -59,7 +59,7 @@ test("Test for get WorkOut 400", async (t)=>{
 
 test("Edit workout by function", async (t) => {
     const workoutFile = "V29ya091dEZpbGU="
-    const res = await editWorkout()
+    const res = await editWorkout({workoutfile: workoutFile})
 
     // check if response is truthy
     t.assert(res)
@@ -133,6 +133,30 @@ test("PUT workout 400", async (t) => {
             json: {
                 workoutfile: workoutFile
             }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/2/workout', {
+            json: {
+                "whatever": "whatevs"
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // missing request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/2/workout', {
+            json: {}
         })
     })
 
