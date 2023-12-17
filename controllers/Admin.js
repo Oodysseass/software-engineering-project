@@ -19,7 +19,7 @@ module.exports.editCalendar = function editCalendar (req, res, next, body, useri
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
 
@@ -29,7 +29,7 @@ module.exports.editStatistics = function editStatistics (req, res, next, body, u
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
 
@@ -39,7 +39,7 @@ module.exports.editWorkout = function editWorkout (req, res, next, body, userId,
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
 
