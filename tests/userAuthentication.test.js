@@ -142,7 +142,7 @@ const expectedUser = {
 }
 
 test('Create user by function', async (t) => {
-    const res = await createUser()
+    const res = await createUser(expectedUser)
 
     // check if response is truthy
     t.assert(res)
@@ -161,7 +161,7 @@ test('Create user by function', async (t) => {
 
 test('POST user 200', async (t) => {
     const { body, statusCode } = await t.context.got.post('user', {
-                                    json: {userKeys},
+                                    json: expectedUser,
                                 });
 
     // check if response is truthy
@@ -177,25 +177,75 @@ test('POST user 200', async (t) => {
 
     // check if the created user is the expected user
     t.deepEqual(body, expectedUser)
+    t.is(statusCode, 200)
 })
 
-const expectedTeam = {
-    TeamName : "Omadara"
-};
+test('POST user 400', async (t) => {
+    // wrong type of input
+    error = await t.throwsAsync(async () => {
+        await t.context.got.post('user', {
+            json: {
+                password: 'test1233',
+                teamdId: 2,
+                isAdmin: true,
+                userId: "lol",
+                BasicInformation: {
+                    phone: '6932112312',
+                    surname: 'Beltes',
+                    name: 'Anastasis',
+                    weight: 80.5,
+                    profileimage: '101010111',
+                    age: 22,
+                    email: 'tasoulis@example.com',
+                    height: 185.5
+                }
+            }
+        })
+    })
 
-const teamKeys = {
-    TeamName: "string"
-};
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong not all user info
+    error = await t.throwsAsync(async () => {
+        await t.context.got.post('user', {
+            json: {
+                teamdId: 2,
+                isAdmin: true,
+                userId: 1,
+                BasicInformation: {
+                    phone: '6932112312',
+                    surname: 'Beltes',
+                    name: 'Anastasis',
+                    weight: 80.5,
+                    profileimage: '101010111',
+                    age: 22,
+                    email: 'tasoulis@example.com',
+                    height: 185.5
+                }
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // missing request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.post('user', {
+            json: {}
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+})
 
 test('POST create team by function', async (t) => {
-
-    //input for function
-    const team = {
-        "userId" : "1",
-        "teamName" : "Omadara"
-    }
-
-    const res = await createTeam(team.userId,team.teamName)
+    const res = await createTeam({ TeamName: "Omadara" }, 1)
 
     // check if response is truthy
     t.assert(res)
