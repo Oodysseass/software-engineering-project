@@ -9,16 +9,12 @@
  * teamName String the name of the created team
  * returns inline_response_200_3
  **/
-exports.createTeam = function(userId,teamName) {
+exports.createTeam = function(body, userId) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "TeamName" : "Omadara"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+    if (body.TeamName){
+      resolve(body);
     } else {
-      resolve();
+      reject(new Error("Empty team name"))
     }
   });
 }
@@ -166,14 +162,10 @@ exports.getWorkout = function(userId,teamId) {
  **/
 exports.loginUser = function(body) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "token" : "000001"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+    if (body.email && body.password) {
+      resolve({token: "000001"});
     } else {
-      resolve();
+      reject(new Error("Empty login body"));
     }
   });
 }
@@ -217,10 +209,10 @@ exports.sendTeamChatMessage = function(body,userid,teamid) {
   "senderId" : 1,
   "message" : "Hello team!"
 };
-    if (Object.keys(examples).length > 0) {
+    if (body.senderId && body.message){
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      reject(new Error("Not right message structure"))
     }
   });
 }
@@ -236,28 +228,26 @@ exports.sendTeamChatMessage = function(body,userid,teamid) {
  **/
 exports.updateUser = function(body,userId) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "test1233",
-  "teamdId" : 2,
-  "isAdmin" : true,
-  "userId" : 1,
-  "BasicInformation" : {
-    "phone" : "6932112312",
-    "surname" : "Beltes",
-    "name" : "Anastasis",
-    "weight" : 80.5,
-    "profileimage" : "101010111",
-    "age" : 22,
-    "email" : "tasoulis@example.com",
-    "height" : 185.5
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+    const example = {
+      password: 'string',
+      teamdId: 'number',
+      isAdmin: 'boolean',
+      userId: 'number',
+      BasicInformation: 'object',
+    };
+
+    if (userId != body.userId)
+      reject(new Error("Forbidden"))
+
+    for (let key of Object.keys(example))
+      if (!body[key])
+        reject(new Error("New user object has not correct structure"));
+
+    for (let [key, type] of Object.entries(example))
+      if (typeof body[key] != type)
+        reject(new Error("New user object has not correct structure"));
+
+    resolve(body);
   });
 }
 
