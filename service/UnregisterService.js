@@ -8,30 +8,25 @@
  * body User_body PersonalDetails of the user
  * returns inline_response_200
  **/
-exports.createUser = function(body) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "password" : "test1233",
-  "teamdId" : 2,
-  "isAdmin" : true,
-  "userId" : 1,
-  "BasicInformation" : {
-    "phone" : "6932112312",
-    "surname" : "Beltes",
-    "name" : "Anastasis",
-    "weight" : 80.5,
-    "profileimage" : "101010111",
-    "age" : 22,
-    "email" : "tasoulis@example.com",
-    "height" : 185.5
-  }
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.createUser = function (body) {
+  return new Promise(function (resolve, reject) {
+    const example = {
+      password: 'string',
+      teamdId: 'number',
+      isAdmin: 'boolean',
+      userId: 'number',
+      BasicInformation: 'object',
+    };
+
+    for (let key of Object.keys(example))
+      if (!body[key])
+        reject(new Error("New user object has not correct structure"));
+
+    for (let [key, type] of Object.entries(example))
+      if (typeof body[key] != type)
+        reject(new Error("New user object has not correct structure"));
+
+    resolve(body);
   });
 }
 
