@@ -251,41 +251,60 @@ test('POST create team by function', async (t) => {
     t.assert(res)
 
     // check if all the expected keys are in the response object
-    for (let key of Object.keys(teamKeys))
-        t.true(key in res)
+    t.assert(res.TeamName)
 
     // check if values are the expected type
-    for (let [key, type] of Object.entries(teamKeys))
-        t.is(typeof res[key], type)
+    t.is(typeof res.TeamName, 'string')
 
-    // check if the created user is the expected user
-    t.deepEqual(res, expectedTeam)
+    // check if the created team is the expected team
+    t.is(res.TeamName, 'Omadara')
 })
 
 test('POST create team 200', async (t) => {
-
-    const query = {
-        teamName: "string"
-    };
-
     const { body, statusCode } = await t.context.got.post('user/1/createTeam', {
-        searchParams: query,
+        json: {
+            TeamName: "Omadara",
+        },
     });
 
     // check if response is truthy
     t.assert(body)
 
     // check if all the expected keys are in the response object
-    for (let key of Object.keys(teamKeys))
-        t.true(key in body)
+    t.assert(body.TeamName)
 
     // check if values are the expected type
-    for (let [key, type] of Object.entries(teamKeys))
-        t.is(typeof body[key], type)
+    t.is(typeof body.TeamName, 'string')
 
-    // check if the created user is the expected user
-    t.deepEqual(body, expectedTeam)
+    // check if the created team is the expected team
+    t.is(body.TeamName, 'Omadara')
 
     // checking the statusCode
-    t.is(statusCode,200);
+    t.is(statusCode, 200);
+})
+
+test('POST create team 400', async (t) => {
+    // wrong request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.post('user/1/createTeam', {
+            json: {
+                "whatever": "whatevs"
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // missing request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.post('user/1/createTeam', {
+            json: {}
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
 })
