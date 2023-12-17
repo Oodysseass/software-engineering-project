@@ -4,6 +4,7 @@ const got = require('got');
 // importing the server that was created in another module and exported there
 const { setupServer } = require('../utils/testServer.js');
 const { getTeammateInfo } = require('../service/UserService.js');
+const { getContacts } = require('../service/UserService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -27,6 +28,30 @@ const teamContactKeys = {
     "height" : 'number'
     };
 
+
+test("Get contacts by function  ", async(t)=>{
+    const res = await getContacts(1,2)
+
+    // getting the first contract
+    const firstelemnt = res[0]
+
+    // check the info 
+    t.is(firstelemnt.name,'tasos')
+    t.is(firstelemnt.surname,'karakoul')
+    t.is(firstelemnt.profileimage,'1111111')
+
+    // getting the second contract
+    const second = res[1]
+
+    // check the info 
+    t.is(second.name,'giwrgos')
+    t.is(second.surname,'gkyzis')
+    t.is(second.profileimage,'0000001')
+
+    // check the keys of return
+    const Keys= ['name', 'surname','profileimage']
+    Keys.forEach((x)=>{t.true(firstelemnt.hasOwnProperty(x))})
+})
 
 // test for /user/{userId}/team/{teamId}/contacts GET - Good Request(200)
 test('Get team contacts', async(t) =>{
@@ -55,6 +80,13 @@ test('Get team contacts', async(t) =>{
     Keys.forEach((x)=>{t.true(firstelement.hasOwnProperty(x))})
 
 
+});
+
+test('GET team contacts 400', async(t) =>{
+    const error = await t.throwsAsync(async () => await t.context.got('user/random/team/random/contacts'), {instanceOf: got.HTTPError});
+    // check message and status code
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, "Response code 400 (Bad Request)");
 });
 
 // test for /user/{userId}/team/{teamId}/contacts/{teammateUserId}

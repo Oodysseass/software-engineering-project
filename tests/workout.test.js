@@ -4,6 +4,7 @@ const got = require('got');
 // importing the server that was created in another module and exported there
 const { setupServer } = require('../utils/testServer.js');
 const { editWorkout } = require('../service/AdminService.js')
+const { getWorkout } = require('../service/UserService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -14,6 +15,19 @@ test.before(async (t) => {
 test.after.always((t) => {
     t.context.server.close(); 
 });
+
+test("Get WorkOut by function" , async (t) => {
+    const res = await getWorkout(1,2)
+    expectedKeys=['workoutfile']
+
+    t.assert(res)
+    //check the keys of body
+    expectedKeys.forEach((x)=>{t.true(res.hasOwnProperty(x))})
+    //check the value
+    t.is(res.workoutfile,'V29ya091dEZpbGU=')
+    //check type
+    t.is(typeof(res.workoutfile),'string')
+})
 
 // test for /user/{userId}/team/{teamId}/workout GET - Good Request(200)
 test("Test for get WorkOut 200", async (t) =>{
