@@ -21,6 +21,23 @@ const userKeys = {
     BasicInformation: 'object',
 }
 
+const expectedUser = {
+    password: 'test1233',
+    teamdId: 2,
+    isAdmin: true,
+    userId: 1,
+    BasicInformation: {
+      phone: '6932112312',
+      surname: 'Beltes',
+      name: 'Anastasis',
+      weight: 80.5,
+      profileimage: '101010111',
+      age: 22,
+      email: 'tasoulis@example.com',
+      height: 185.5
+    }
+}
+
 test('GET user by function', async (t) => {
     const res  = await userUserIdGET(1)
 
@@ -97,7 +114,7 @@ test("Put user 200", async (t) =>{
     //check statuscode==200
     t.is(statusCode,200)
     //check the values 
-    t.is(body.password,'test1233')
+    t.is(body.password,'ChangedPassword')
     t.is(body.isAdmin,true)
     t.is(body.BasicInformation.name,'Anastasis')
 
@@ -107,45 +124,97 @@ test("Put user 200", async (t) =>{
 })
 
 test("Put user 400" ,async (t)=>{
-        // a body for Put request 
-        const requestBody={
-            "password" : "ChangedPassword",
-            "teamdId" : 2,
-            "isAdmin" : true,
-            "userId" : 1,
-            "BasicInformation" : {
-                "phone" : "6932112312",
-                "surname" : "Beltes",
-                "name" : "Anastasis",
-                "weight" : 80.5,
-                "profileimage" : "101010111",
-                "age" : 22,
-                "email" : "tasoulis@example.com",
-                "height" : 185.5
-             }
-        }
-    const error = await t.throwsAsync(async () => {
-        const res = await t.context.got.put('user/randomid',{
-            json: requestBody,
-            responseType: 'json', 
-          });
-    });
+    // wrong type of input
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1', {
+            json: {
+                password: 'test1233',
+                teamdId: 2,
+                isAdmin: "arxhgara",
+                userId: 1,
+                BasicInformation: {
+                    phone: '6932112312',
+                    surname: 'Beltes',
+                    name: 'Anastasis',
+                    weight: 80.5,
+                    profileimage: '101010111',
+                    age: 22,
+                    email: 'tasoulis@example.com',
+                    height: 185.5
+                }
+            }
+        })
+    })
 
-    // Access the properties of the caught error
-    t.is(error.response.statusCode, 400);
-    t.is(error.message, 'Response code 400 (Bad Request)');
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong not all user info
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1', {
+            json: {
+                teamdId: 2,
+                isAdmin: true,
+                userId: 1,
+                BasicInformation: {
+                    phone: '6932112312',
+                    surname: 'Beltes',
+                    name: 'Anastasis',
+                    weight: 80.5,
+                    profileimage: '101010111',
+                    age: 22,
+                    email: 'tasoulis@example.com',
+                    height: 185.5
+                }
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // missing request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1', {
+            json: {}
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // change id to that of another user
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1', {
+            json: {
+                password: 'test1233',
+                teamdId: 2,
+                isAdmin: true,
+                userId: 2,
+                BasicInformation: {
+                    phone: '6932112312',
+                    surname: 'Beltes',
+                    name: 'Anastasis',
+                    weight: 80.5,
+                    profileimage: '101010111',
+                    age: 22,
+                    email: 'tasoulis@example.com',
+                    height: 185.5
+                }
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 403)
+    t.is(error.message, 'Response code 403 (Forbidden)')
 });
 
 test(' Put user by function ' , async (t) =>{
-    ExpectedRes={
-        password : "string",
-        teamdId : "number",
-        isAdmin :"boolean",
-        userId : "number",
-        BasicInformation : 'object'
-        
-    }
-    const res = await updateUser(ExpectedRes,1)
+    const res = await updateUser(expectedUser, 1)
 
     //check response
     t.assert(res)
@@ -154,7 +223,7 @@ test(' Put user by function ' , async (t) =>{
     ExpectedKeys.forEach((x)=>{t.true(res.hasOwnProperty(x))})
 
     //checks the type
-    for (let [key, type] of Object.entries(ExpectedRes))
+    for (let [key, type] of Object.entries(userKeys))
     t.is(typeof res[key], type);
 })
 
