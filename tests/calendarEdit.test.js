@@ -98,7 +98,7 @@ const calendarFile = [{
 ]
 
 test("Edit calendar by function", async (t) => {
-    const res = await editCalendar()
+    const res = await editCalendar(calendarFile)
 
     // check if response is truthy
     t.assert(res)
@@ -180,6 +180,17 @@ test("PUT calendar 400", async (t) => {
     error = await t.throwsAsync(async () => {
         await t.context.got.put('user/randomid/team/randomid/calendarEdit', {
             json: calendarFile
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // missing request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/2/calendarEdit', {
+            json: {}
         })
     })
 
