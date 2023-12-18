@@ -3,13 +3,13 @@
 var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 
-module.exports.createTeam = function createTeam (req, res, next, userId, teamName) {
-  User.createTeam(userId, teamName)
+module.exports.createTeam = function createTeam (req, res, next, body, userId) {
+  User.createTeam(body, userId)
     .then(function (response) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
 
@@ -69,7 +69,7 @@ module.exports.loginUser = function loginUser (req, res, next, body) {
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
 
@@ -89,7 +89,7 @@ module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, nex
       utils.writeJson(res, response);
     })
     .catch(function (response) {
-      utils.writeJson(res, response);
+      utils.writeJson(res, response, 400);
     });
 };
 
@@ -98,8 +98,11 @@ module.exports.updateUser = function updateUser (req, res, next, body, userId) {
     .then(function (response) {
       utils.writeJson(res, response);
     })
-    .catch(function (response) {
-      utils.writeJson(res, response);
+    .catch(function (error) {
+      if (error.message == "Forbidden")
+        utils.writeJson(res, error, 403);
+      else
+        utils.writeJson(res, error, 400)
     });
 };
 

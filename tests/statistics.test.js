@@ -119,20 +119,68 @@ test('PUT Statistics - Good Request', async (t) =>{
 });
 
 // test for /user/{userId}/team/{teamId}/statistics PUT - Bad Request (400)
-test('PUT Statistics - Bad Request', async (t) =>{
-    const error = await t.throwsAsync(async () => {
-        const res = await t.context.got.put('user/randomid/team/randomid/statistics', {
-            body: JSON.stringify({
-                1: "random"
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
-        });
-    });
+test("PUT statistics 400", async (t) => {
+    const statFile = "newStatFile"
+    // wrong teamid
+    let error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/randomid/statistics', {
+            json: {
+                statfile: statFile
+            }
+        })
+    })
 
-    // Access the properties of the caught error
-    t.is(error.response.statusCode, 400);
-    t.is(error.message, 'Response code 400 (Bad Request)');
-});
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong userid
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/randomid/team/2/statistics', {
+            json: {
+                statfile: statFile
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong both ids
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/randomid/team/randomid/statistics', {
+            json: {
+                statfile: statFile
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // wrong request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/2/statistics', {
+            json: {
+                "whatever": "whatevs"
+            }
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+
+    // missing request body
+    error = await t.throwsAsync(async () => {
+        await t.context.got.put('user/1/team/2/statistics', {
+            json: {}
+        })
+    })
+
+    // check message and statuscode
+    t.is(error.response.statusCode, 400)
+    t.is(error.message, 'Response code 400 (Bad Request)')
+})

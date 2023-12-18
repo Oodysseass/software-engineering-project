@@ -97,14 +97,10 @@ test("Put TeamChat 200",async (t)=> {
 
 test("Put TeamChat 400", async (t)=>{
     const error = await t.throwsAsync(async () => {
-        const res = await t.context.got.put('user/randomid/team/randomteamid/teamchat', {
-            body: JSON.stringify({
+        res = await t.context.got.put('user/1/team/2/teamchat', {
+            json: {
                 wrong: "wrong"
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
+            }
         });
     });
 

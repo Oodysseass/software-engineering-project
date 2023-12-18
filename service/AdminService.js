@@ -41,20 +41,10 @@ exports.getCalendar = function(userid,teamid) {
  **/
 exports.editCalendar = function(body,userid,teamid) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "location" : "gym",
-  "time" : "13.30",
-  "practice" : "Weight"
-}, {
-  "location" : "court",
-  "time" : "19.30",
-  "practice" : "Basketball"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+    if (body.length > 0){
+      resolve(body)
     } else {
-      resolve();
+      reject(new Error('Empty calendar object'))
     }
   });
 }
@@ -71,14 +61,10 @@ exports.editCalendar = function(body,userid,teamid) {
  **/
 exports.editStatistics = function(body,userId,teamId) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "statfile" : "U3RhdGlzdGljc0ZpbGU="
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+    if (body.statfile){
+      resolve(body)
     } else {
-      resolve();
+      reject(new Error('Empty statfile'))
     }
   });
 }
@@ -95,14 +81,10 @@ exports.editStatistics = function(body,userId,teamId) {
  **/
 exports.editWorkout = function(body,userId,teamId) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "workoutfile" : "V29ya091dEZpbGU="
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+    if (body.workoutfile){
+      resolve(body)
     } else {
-      resolve();
+      reject(new Error('Empty workout file'))
     }
   });
 }
