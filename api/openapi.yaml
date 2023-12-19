@@ -1139,11 +1139,11 @@ components:
       type: object
       properties:
         userId:
-          type: string
-          example: "1"
+          type: integer
+          example: 1
         teamId:
-          type: string
-          example: "2"
+          type: integer
+          example: 2
         invitedUserEmail:
           type: string
           example: tasoulis@example.com
