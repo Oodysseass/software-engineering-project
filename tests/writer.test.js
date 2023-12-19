@@ -61,3 +61,35 @@ test('writeJson function - default to 200 if no code provided', (t) => {
     t.is(responseData.data, 'Default Success');
     t.is(response.headers['Content-Type'], 'application/json');
 });
+
+
+// writeJson fucntion - handling ResponsePayload
+test('writeJson function - handle ResponsePayload object or integer', (t) => {
+    const response = createMockResponse();
+
+    // Creating a ResponsePayload object
+    const responsePayload = new ResponsePayload(500, { error: 'Internal Server Error' });
+
+    // Using the writeJson function with a ResponsePayload object
+    writeJson(response, responsePayload);
+
+    let responseData = JSON.parse(response.payload);
+
+    // Assertions for ResponsePayload
+    t.is(response.statusCode, 500);
+    t.is(responseData.error, 'Internal Server Error');
+    t.is(response.headers['Content-Type'], 'application/json');
+
+    // Reset response object
+    response.payload = undefined;
+
+    // Using the writeJson function with an integer
+    writeJson(response, 404);
+
+    responseData = JSON.parse(response.payload);
+
+    // Assertions for integer
+    t.is(response.statusCode, 404);
+    t.is(response.headers['Content-Type'], 'application/json');
+    t.is(responseData, 404); // No payload for integer
+});
