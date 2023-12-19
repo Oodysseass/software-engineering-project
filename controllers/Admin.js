@@ -1,7 +1,7 @@
 'use strict';
 
 var utils = require('../utils/writer.js');
-var Admin = require('../service/AdminService');
+var Admin = require('../service/AdminService.js');
 
 module.exports.getCalendar = function getCalendar (req, res, next, userid, teamid) {
   Admin.getCalendar(userid, teamid)
