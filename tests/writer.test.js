@@ -38,3 +38,15 @@ test('writeJson function - with specified code', (t) => {
     t.is(responseData.error, 'Not Found');
     t.is(response.headers['Content-Type'], 'application/json');
 });
+
+// writeJson fucntion code 500 - Server Error
+test('writeJson function - handle ResponsePayload object', (t) => {
+    const response = createMockResponse();
+    const responsePayload = new ResponsePayload(500, { error: 'Internal Server Error' });
+    writeJson(response, responsePayload);
+
+    const responseData = JSON.parse(response.payload);
+    t.is(response.statusCode, 500);
+    t.is(responseData.error, 'Internal Server Error');
+    t.is(response.headers['Content-Type'], 'application/json');
+});
