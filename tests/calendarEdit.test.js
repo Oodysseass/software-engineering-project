@@ -94,10 +94,9 @@ const calendarFile = [{
     "location": "court",
     "time": "19.30",
     "practice": "Basketball"
-}
-]
+}];
 
-test("Edit calendar by function", async (t) => {
+test("Edit calendarEdit by function", async (t) => {
     const res = await editCalendar(calendarFile)
 
     // check if response is truthy
@@ -120,7 +119,27 @@ test("Edit calendar by function", async (t) => {
 
     // check if the calander is the expected calander
     t.deepEqual(res, calendarFile)
-})
+});
+
+// empty calendar item to test an empty edit 
+const emptyCalendarFile = [];
+
+test("Edit calendar by function - Empty Calendar", async (t) => {
+  try {
+    // This should trigger the else statement in editCalendar function
+    await editCalendar(emptyCalendarFile);
+
+    // If no error is thrown, fail the test
+    t.fail("Expected an error, but the function executed successfully");
+  } catch (error) {
+    console.log('HEREEEEE')
+    // Check if the error message is as expected
+    t.is(error.message, 'Empty calendar object');
+
+    // Check if the error is an instance of the expected Error class
+    t.true(error instanceof Error);
+  }
+});
 
 test("PUT calendar 200", async (t) => {
     const { body, statusCode } = await t.context.got.put("user/1/team/2/calendarEdit",
