@@ -50,3 +50,14 @@ test('writeJson function - handle ResponsePayload object', (t) => {
     t.is(responseData.error, 'Internal Server Error');
     t.is(response.headers['Content-Type'], 'application/json');
 });
+
+// writeJson fucntion code 200, but no code provided
+test('writeJson function - default to 200 if no code provided', (t) => {
+    const response = createMockResponse();
+    writeJson(response, { data: 'Default Success' });
+
+    const responseData = JSON.parse(response.payload);
+    t.is(response.statusCode, 200);
+    t.is(responseData.data, 'Default Success');
+    t.is(response.headers['Content-Type'], 'application/json');
+});
