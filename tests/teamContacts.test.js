@@ -175,3 +175,29 @@ test('DELETE Teammate call by function', async(t) =>{
     t.deepEqual(res,expectedRes)
 
 });
+
+test('DELETE Teammate 200', async(t) =>{
+
+    const expectedRes = {
+        message: 'Successful operation'
+    }
+
+    const {body, statusCode} = await t.context.got.delete('user/1/team/1/contacts/4');
+
+    // check if the response is truthy
+    t.assert(body);
+
+    // checking the statusCode
+    t.is(statusCode,200);
+    
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(deleteKeys))
+        t.true(key in body);
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(deleteKeys))
+        t.is(typeof body[key], type);
+
+    //check if its the expected response
+    t.deepEqual(body,expectedRes)
+})
