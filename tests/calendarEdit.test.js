@@ -132,7 +132,6 @@ test("Edit calendar by function - Empty Calendar", async (t) => {
     // If no error is thrown, fail the test
     t.fail("Expected an error, but the function executed successfully");
   } catch (error) {
-    console.log('HEREEEEE')
     // Check if the error message is as expected
     t.is(error.message, 'Empty calendar object');
 
