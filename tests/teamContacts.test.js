@@ -201,3 +201,10 @@ test('DELETE Teammate 200', async(t) =>{
     //check if its the expected response
     t.deepEqual(body,expectedRes)
 })
+
+test('DELETE Teammate 400', async (t) =>{
+    const error = await t.throwsAsync(async () => await t.context.got.delete('user/random/team/random/contacts/random'), {instanceOf: got.HTTPError});
+    // check message and status code
+    t.is(error.response.statusCode, 400);
+    t.is(error.message, "Response code 400 (Bad Request)");
+});
