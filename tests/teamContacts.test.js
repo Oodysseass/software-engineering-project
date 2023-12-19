@@ -5,6 +5,7 @@ const got = require('got');
 const { setupServer } = require('../utils/testServer.js');
 const { getTeammateInfo } = require('../service/UserService.js');
 const { getContacts } = require('../service/UserService.js');
+const { kickTeammate} = require('../service/AdminService.js');
 
 // before testing, intializing the server and the request making
 test.before(async (t) => {
@@ -138,4 +139,39 @@ test('GET TeammateInfo - Bad Request', async (t) =>{
     // check message and status code
     t.is(error.response.statusCode, 400);
     t.is(error.message, "Response code 400 (Bad Request)");
+});
+
+const deleteKeys = {
+    message: 'string'
+};
+
+test('DELETE Teammate call by function', async(t) =>{
+
+    const adminInfo = {
+        'adminId' : 1,
+        'teamId' : 1,
+        'teammateId' : 4
+    }
+
+    const expectedRes = {
+        message: 'Successful operation'
+    }
+
+    const res = await kickTeammate(adminInfo.adminId,adminInfo.teamId,adminInfo.teammateId);
+
+    // check if the response is truthy
+    t.assert(res)
+
+    // check if all the expected keys are in the response object
+    for (let key of Object.keys(deleteKeys))
+        t.true(key in res);
+
+
+    // check if values are the expected type
+    for (let [key, type] of Object.entries(deleteKeys))
+        t.is(typeof res[key], type);
+
+    //check if its the expected response
+    t.deepEqual(res,expectedRes)
+
 });
