@@ -93,3 +93,11 @@ test('writeJson function - handle ResponsePayload object or integer', (t) => {
     t.is(response.headers['Content-Type'], 'application/json');
     t.is(responseData, 404); // No payload for integer
 });
+
+// test for respondWithCode function
+test('respondWithCode function - create ResponsePayload object', (t) => {
+    const responsePayload = respondWithCode(404, { message: 'Not Found' });
+
+    // Ensuring that responsePayload is an instance of ResponsePayload
+    t.true(responsePayload instanceof ResponsePayload);
+});
