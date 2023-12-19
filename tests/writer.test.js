@@ -27,3 +27,14 @@ test('writeJson function - default code (200)', (t) => {
     t.is(responseData.message, 'Success');
     t.is(response.headers['Content-Type'], 'application/json');
 });
+
+// writeJson fucntion code 404 - Error
+test('writeJson function - with specified code', (t) => {
+    const response = createMockResponse();
+    writeJson(response, { error: 'Not Found' }, 404);
+
+    const responseData = JSON.parse(response.payload);
+    t.is(response.statusCode, 404);
+    t.is(responseData.error, 'Not Found');
+    t.is(response.headers['Content-Type'], 'application/json');
+});
