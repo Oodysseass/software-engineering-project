@@ -123,19 +123,24 @@ exports.kickTeammate = function(userId,teamId,teammateUserId) {
  * invitedUserEmail String the email of the invited user
  * returns inline_response_200_4
  **/
-exports.sendInvitation = function(userId,teamId,invitedUserEmail) {
+exports.sendInvitation = function(userId, teamId, invitedUserEmail) {
   return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "teamId" :  2,
-  "userId" :  1,
-  "invitedUserEmail" : "tasoulis@example.com"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
+    // Checking if any of the keys has an empty value
+    if (!userId || !teamId || !invitedUserEmail) {
+      reject(new Error('One or more required fields are empty'));
     } else {
-      resolve();
+      var examples = {};
+      examples['application/json'] = {
+        "teamId" :  2,
+        "userId" :  1,
+        "invitedUserEmail" : "tasoulis@example.com"
+      };
+      if (Object.keys(examples).length > 0) {
+        resolve(examples[Object.keys(examples)[0]]);
+      } else {
+        resolve();
+      }
     }
   });
-}
+};
 

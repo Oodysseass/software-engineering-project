@@ -79,11 +79,11 @@ test('GET invitation 400', async(t) =>{
 test("PUT SendInvitation by function", async (t) =>{
     // construct the input of the function for clarity
     const invitation = {
-        "teamId" : "2",
-        "userId" : "6",
+        "teamId" : 2,
+        "userId" : 6,
         "invitedUserEmail" : "randomuser@example.com"
     };
-    const res = await sendInvitation(invitation.teamId,invitation.userId,invitation.invitedUserEmail);
+    const res = await sendInvitation(invitation.userId,invitation.teamId,invitation.invitedUserEmail);
 
     // check if the response is truthy
     t.assert(res);
@@ -95,6 +95,28 @@ test("PUT SendInvitation by function", async (t) =>{
     // check if values are the expected type
     for (let [key, type] of Object.entries(invitationKeys))
         t.is(typeof res[key], type);
+});
+
+// test for /user/{userId}/team/{teamId}/sendInvitation PUT - Parameter Missing
+test("PUT SendInvitation by function - Parameter Missing", async (t) =>{
+    // construct the input of the function for clarity
+    const invitation = {
+        "teamId" : 2,
+        "userId" : 6,
+    };
+    try {
+        // This should trigger the else statement in editCalendar function
+        await sendInvitation(invitation.userId,invitation.teamId);
+    
+        // If no error is thrown, fail the test
+        t.fail("Expected an error, but the function executed successfully");
+      } catch (error) {
+        // Check if the error message is as expected
+        t.is(error.message, 'One or more required fields are empty');
+    
+        // Check if the error is an instance of the expected Error class
+        t.true(error instanceof Error);
+      };
 });
 
 // test for /user/{userId}/team/{teamId}/sendInvitation PUT - Good Request(200)
@@ -112,7 +134,7 @@ test("PUT SendInvitation - Good Request", async (t) =>{
 
     // check if the response is truthy
     t.assert(body);
-
+    
     // check if all the expected keys are in the response object
     for (let key of Object.keys(invitationKeys))
         t.true(key in body);
