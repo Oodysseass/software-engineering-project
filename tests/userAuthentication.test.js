@@ -5,6 +5,8 @@ const { createUser } = require('../service/UnregisterService.js')
 const { loginUser } = require('../service/UserService.js');
 const { createTeam } = require('../service/UserService.js');
 
+const { userKeys, expectedUser } = require('../utils/schemas.js')
+
 test.before(async (t) => {
     t.context = await setupServer()
 });
@@ -115,32 +117,6 @@ test('PUT user login 400', async (t) => {
     t.is(error.message, 'Response code 400 (Bad Request)')
 });
 
-// keys of user object
-const userKeys = {
-    password: 'string',
-    teamdId: 'number',
-    isAdmin: 'boolean',
-    userId: 'number',
-    BasicInformation: 'object',
-}
-
-const expectedUser = {
-    password: 'test1233',
-    teamdId: 2,
-    isAdmin: true,
-    userId: 1,
-    BasicInformation: {
-      phone: '6932112312',
-      surname: 'Beltes',
-      name: 'Anastasis',
-      weight: 80.5,
-      profileimage: '101010111',
-      age: 22,
-      email: 'tasoulis@example.com',
-      height: 185.5
-    }
-}
-
 test('Create user by function', async (t) => {
     const res = await createUser(expectedUser)
 
@@ -182,24 +158,11 @@ test('POST user 200', async (t) => {
 
 test('POST user 400', async (t) => {
     // wrong type of input
+    let tempUser = Object.assign({}, expectedUser)
+    tempUser.userId = 'lol'
     error = await t.throwsAsync(async () => {
         await t.context.got.post('user', {
-            json: {
-                password: 'test1233',
-                teamdId: 2,
-                isAdmin: true,
-                userId: "lol",
-                BasicInformation: {
-                    phone: '6932112312',
-                    surname: 'Beltes',
-                    name: 'Anastasis',
-                    weight: 80.5,
-                    profileimage: '101010111',
-                    age: 22,
-                    email: 'tasoulis@example.com',
-                    height: 185.5
-                }
-            }
+            json: tempUser
         })
     })
 
@@ -208,23 +171,11 @@ test('POST user 400', async (t) => {
     t.is(error.message, 'Response code 400 (Bad Request)')
 
     // wrong not all user info
+    tempUser = Object.assign({}, expectedUser)
+    delete tempUser.password
     error = await t.throwsAsync(async () => {
         await t.context.got.post('user', {
-            json: {
-                teamdId: 2,
-                isAdmin: true,
-                userId: 1,
-                BasicInformation: {
-                    phone: '6932112312',
-                    surname: 'Beltes',
-                    name: 'Anastasis',
-                    weight: 80.5,
-                    profileimage: '101010111',
-                    age: 22,
-                    email: 'tasoulis@example.com',
-                    height: 185.5
-                }
-            }
+            json: tempUser
         })
     })
 
