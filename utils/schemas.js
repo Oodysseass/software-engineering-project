@@ -1,4 +1,6 @@
-// keys of user object
+/*
+  template user object used during testing
+*/
 const userKeys = {
     password: 'string',
     teamdId: 'number',
@@ -7,7 +9,9 @@ const userKeys = {
     BasicInformation: 'object',
 }
 
-// example user for testing
+/*
+  example user object used during testing
+*/
 const expectedUser = {
     password: 'test1233',
     teamdId: 2,
@@ -25,6 +29,7 @@ const expectedUser = {
     }
 }
 
+// export for use in testing
 module.exports = {
   userKeys,
   expectedUser
