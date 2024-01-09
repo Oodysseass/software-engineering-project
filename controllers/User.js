@@ -71,12 +71,20 @@ module.exports.getStatistics = function getStatistics (req, res, next, userId, t
     });
 };
 
-// Endpoint for retrieving team chat messages for a user within a specific team
+/*
+  Endpoint for retrieving team chat messages for a user within a specific team
+
+  userid: integer specifying the id of the user that requests to retrieve the team chat messages
+
+  teamid: integer specifying the id of the team of the user
+
+  returns http response based on the result of the operation
+*/
 module.exports.getTeamChat = function getTeamChat (req, res, next, userid, teamid) {
   // Call the getTeamChat function from the UserService, passing the userid and teamid
   User.getTeamChat(userid, teamid)
     .then(function (response) {
-      // Write the JSON response with the retrieved team chat messages
+      // Write the JSON response with the retrieved team chat messages - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
@@ -85,12 +93,22 @@ module.exports.getTeamChat = function getTeamChat (req, res, next, userid, teami
     });
 };
 
-// Endpoint for retrieving information about a teammate for a user within a specific team
+/*
+  Endpoint for retrieving information about a teammate for a user within a specific team
+
+  userId: integer specifying the id of the user that requests to retrieve the information of another team member
+
+  teamId: integer specifying the id of the team of the user
+
+  teammateUserId: integer specifying the id of the teammate whose information are requested to be retrieved
+
+  returns http response based on the result of the operation
+*/
 module.exports.getTeammateInfo = function getTeammateInfo (req, res, next, userId, teamId, teammateUserId) {
   // Call the getTeammateInfo function from the UserService, passing userId, teamId, and teammateUserId
   User.getTeammateInfo(userId, teamId, teammateUserId)
     .then(function (response) {
-      // Write the JSON response with the retrieved teammate information
+      // Write the JSON response with the retrieved teammate information - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
@@ -99,12 +117,20 @@ module.exports.getTeammateInfo = function getTeammateInfo (req, res, next, userI
     });
 };
 
-// Endpoint for retrieving workout information for a user within a specific team
+/*
+  Endpoint for retrieving workout information for a user within a specific team
+
+  userId: integer specifying the id of the user that requests to retrieve the workout information 
+
+  teamId: integer specifying the id of the team of the user
+
+  returns http response based on the result of the operation
+*/
 module.exports.getWorkout = function getWorkout (req, res, next, userId, teamId) {
   // Call the getWorkout function from the UserService, passing userId and teamId
   User.getWorkout(userId, teamId)
     .then(function (response) {
-      // Write the JSON response with the retrieved workout information
+      // Write the JSON response with the retrieved workout information - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
