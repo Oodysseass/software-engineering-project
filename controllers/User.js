@@ -203,18 +203,26 @@ module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, nex
     });
 };
 
-// Endpoint for updating user information
+/*
+  Endpoint for updating user information
+
+  body: the request body holding the user's Personal Details object 
+
+  userId: integer specifying the id of the user that wants to update his/her info
+
+  returns http response based on the result of the operation
+*/
 module.exports.updateUser = function updateUser (req, res, next, body, userId) {
   // Call the updateUser function from the UserService, passing the body and userId
   User.updateUser(body, userId)
     .then(function (response) {
-      // Write the JSON response with the result of the update operation
+      // Write the JSON response with the result of the update operation - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (error) {
       // Check the error message and write a JSON response with the appropriate status code
       if (error.message == "Forbidden")
-        // Error Code 403
+        // Error Code 403 - server refuses to authorize the request - client does not have the permissions
         utils.writeJson(res, error, 403);
       else
         // Error Code 400
@@ -222,12 +230,18 @@ module.exports.updateUser = function updateUser (req, res, next, body, userId) {
     });
 };
 
-// Endpoint for retrieving user information by user ID
+/*
+  Endpoint for retrieving user information by user ID
+
+  userId: integer specifying the id of the user that wants to see his/her info
+
+  returns http response based on the result of the operation
+*/
 module.exports.userUserIdGET = function userUserIdGET (req, res, next, userId) {
   // Call the userUserIdGET function from the UserService, passing the userId
   User.userUserIdGET(userId)
     .then(function (response) {
-      // Write the JSON response with the retrieved user information
+      // Write the JSON response with the retrieved user information - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
