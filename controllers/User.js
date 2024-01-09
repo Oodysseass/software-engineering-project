@@ -139,12 +139,18 @@ module.exports.getWorkout = function getWorkout (req, res, next, userId, teamId)
     });
 };
 
-// Endpoint for user login
+/*
+  Endpoint for user login
+
+  body: the request body holding the user_login_body - object with the user email and password 
+
+  returns http response based on the result of the operation
+*/
 module.exports.loginUser = function loginUser (req, res, next, body) {
   // Call the loginUser function from the UserService, passing the provided body
   User.loginUser(body)
     .then(function (response) {
-      // Write the JSON response with the result of the login operation
+      // Write the JSON response with the result of the login operation - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
@@ -153,13 +159,18 @@ module.exports.loginUser = function loginUser (req, res, next, body) {
     });
 };
 
+/*
+  Endpoint for viewing invitations for a user
 
-// Endpoint for viewing invitations for a user
+  userId: integer specifying the id of the user that requests to retrieve his/her invitations
+
+  returns http response based on the result of the operation
+*/
 module.exports.seeInvitation = function seeInvitation (req, res, next, userId) {
   // Call the seeInvitation function from the UserService, passing the userId
   User.seeInvitation(userId)
     .then(function (response) {
-      // Write the JSON response with the retrieved invitations
+      // Write the JSON response with the retrieved invitations - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
@@ -168,12 +179,22 @@ module.exports.seeInvitation = function seeInvitation (req, res, next, userId) {
     });
 };
 
-// Endpoint for sending a team chat message
+/*
+  Endpoint for sending a team chat message
+
+  body: the request body holding the teamid_teamchat_body - an object with the the message of the user and the senderId
+
+  userid: integer specifying the id of the user that requests to send a chat message
+
+  teamid: integer specifying the id of the team of the user
+
+  returns http response based on the result of the operation
+*/
 module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, next, body, userid, teamid) {
   // Call the sendTeamChatMessage function from the UserService, passing the body, userid, and teamid
   User.sendTeamChatMessage(body, userid, teamid)
     .then(function (response) {
-      // Write the JSON response with the result of the sendTeamChatMessage operation
+      // Write the JSON response with the result of the sendTeamChatMessage operation - Successful Operation
       utils.writeJson(res, response);
     })
     .catch(function (response) {
