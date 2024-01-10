@@ -1,10 +1,21 @@
 const test = require('ava');
 
+const { setupServer } = require('../utils/testServer.js');
 const { createUser } = require('../service/UnregisterService.js');
 const { loginUser } = require('../service/UserService.js');
 const { createTeam } = require('../service/UserService.js');
 
 const { userKeys, expectedUser } = require('../utils/schemas.js');
+
+// before testing, intializing the server and the request making
+test.before(async (t) => {
+    t.context = await setupServer();
+});
+
+// always closing the server after any test in the statistics section
+test.after.always((t) => {
+    t.context.server.close(); 
+});
 
 test('PUT user login call by function', async(t) =>{
     // a body for Put request 
