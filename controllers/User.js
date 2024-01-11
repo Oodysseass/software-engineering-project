@@ -171,7 +171,10 @@ module.exports.getWorkout = function getWorkout (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.loginUser = function loginUser (req, res, next, body) {
+module.exports.loginUser = function loginUser (req, res, next) {
+  // Extract the request body
+  const body = req;
+
   // Call the loginUser function from the UserService, passing the provided body
   User.loginUser(body)
     .then(function (response) {
@@ -191,7 +194,10 @@ module.exports.loginUser = function loginUser (req, res, next, body) {
 
   returns http response based on the result of the operation
 */
-module.exports.seeInvitation = function seeInvitation (req, res, next, userId) {
+module.exports.seeInvitation = function seeInvitation (req, res, next) {
+  // Extract parameter
+  const userId = req.params.userId;
+
   // Call the seeInvitation function from the UserService, passing the userId
   User.seeInvitation(userId)
     .then(function (response) {
@@ -215,7 +221,13 @@ module.exports.seeInvitation = function seeInvitation (req, res, next, userId) {
 
   returns http response based on the result of the operation
 */
-module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, next, body, userid, teamid) {
+module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, next) {
+  
+  // Extract the body and the params
+  const { body } = req;
+  const userid = req.params.userid;
+  const teamid = req.params.teamid;
+
   // Call the sendTeamChatMessage function from the UserService, passing the body, userid, and teamid
   User.sendTeamChatMessage(body, userid, teamid)
     .then(function (response) {
