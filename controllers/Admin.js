@@ -14,7 +14,7 @@ var Admin = require('../service/AdminService.js');
 
   returns http response based on the result of the operation
 */
-module.exports.getCalendar = function getCalendar (req, res, next) {
+module.exports.getCalendar = function getCalendar (req, res) {
   const userid = req.params.userid;
   const teamid = req.params.teamid;
 
@@ -38,7 +38,7 @@ module.exports.getCalendar = function getCalendar (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.editCalendar = function editCalendar (req, res, next) {
+module.exports.editCalendar = function editCalendar (req, res) {
   const { body } = req;
   const userid = req.params.userid;
   const teamid = req.params.teamid;
@@ -63,7 +63,7 @@ module.exports.editCalendar = function editCalendar (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.editStatistics = function editStatistics (req, res, next) {
+module.exports.editStatistics = function editStatistics (req, res) {
   const { body } = req;
   const userId = req.params.userid;
   const teamId = req.params.teamid;
@@ -88,7 +88,7 @@ module.exports.editStatistics = function editStatistics (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.editWorkout = function editWorkout (req, res, next) {
+module.exports.editWorkout = function editWorkout (req, res) {
   const { body } = req;
   const userId = req.params.userId;
   const teamId = req.params.teamId;
@@ -113,7 +113,7 @@ module.exports.editWorkout = function editWorkout (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.kickTeammate = function kickTeammate (req, res, next) {
+module.exports.kickTeammate = function kickTeammate (req, res) {
   const userId = req.params.userid;
   const teamId = req.params.teamid;
   const teammateUserId = req.params.teammateUserId;
@@ -138,7 +138,7 @@ module.exports.kickTeammate = function kickTeammate (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.sendInvitation = function sendInvitation (req, res, next) {
+module.exports.sendInvitation = function sendInvitation (req, res) {
   const userId = req.openapi.pathParams.userId;
   const teamId = req.openapi.pathParams.teamId;
   const invitedUserEmail = req.query.invitedUserEmail;

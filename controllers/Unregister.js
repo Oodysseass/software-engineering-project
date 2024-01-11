@@ -10,7 +10,9 @@ var Unregister = require('../service/UnregisterService');
   
   returns http response based on the result of the operation
 */
-module.exports.createUser = function createUser (req, res, next, body) {
+module.exports.createUser = function createUser (req, res) {
+  const { body } = req
+
   // use service function
   Unregister.createUser(body)
     .then(function (response) {
