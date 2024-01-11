@@ -14,7 +14,11 @@ var User = require('../service/UserService');
 
   returns http response based on the result of the operation
 */
-module.exports.createTeam = function createTeam (req, res, next, body, userId) {
+module.exports.createTeam = function createTeam (req, res, next) {
+  // Extract the body and the params
+  const { body } = req;
+  const userId = req.params.userId;
+
   // Call the createTeam function from the UserService, passing the provided body and userId
   User.createTeam(body, userId)
     .then(function (response) {
@@ -36,7 +40,11 @@ module.exports.createTeam = function createTeam (req, res, next, body, userId) {
 
   returns http response based on the result of the operation
 */
-module.exports.getContacts = function getContacts (req, res, next, userId, teamId) {
+module.exports.getContacts = function getContacts (req, res, next) {
+  // Extract the params
+  const userId = req.params.userId;
+  const teamId = req.params.teamId;
+
   // Call the getContacts function from the UserService, passing the userId and teamId
   User.getContacts(userId, teamId)
     .then(function (response) {
@@ -58,7 +66,11 @@ module.exports.getContacts = function getContacts (req, res, next, userId, teamI
 
   returns http response based on the result of the operation
 */
-module.exports.getStatistics = function getStatistics (req, res, next, userId, teamId) {
+module.exports.getStatistics = function getStatistics (req, res, next) {
+  // Extract the params
+  const userId = req.params.userId;
+  const teamId = req.params.teamId;
+
   // Call the getStatistics function from the UserService, passing the userId and teamId
   User.getStatistics(userId, teamId)
     .then(function (response) {
