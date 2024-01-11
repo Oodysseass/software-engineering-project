@@ -222,7 +222,6 @@ module.exports.seeInvitation = function seeInvitation (req, res, next) {
   returns http response based on the result of the operation
 */
 module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, next) {
-  
   // Extract the body and the params
   const { body } = req;
   const userid = req.params.userid;
@@ -252,7 +251,7 @@ module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, nex
 module.exports.updateUser = function updateUser (req, res, next) {
   // Extract the body and the params
   const { body } = req;
-  const userId = req.params.userId;
+  const userId = req.openapi.pathParams.userId;
 
   // Call the updateUser function from the UserService, passing the body and userId
   User.updateUser(body, userId)
