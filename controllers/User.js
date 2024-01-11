@@ -173,7 +173,7 @@ module.exports.getWorkout = function getWorkout (req, res, next) {
 */
 module.exports.loginUser = function loginUser (req, res, next) {
   // Extract the request body
-  const body = req;
+  const { body } = req;
 
   // Call the loginUser function from the UserService, passing the provided body
   User.loginUser(body)
