@@ -92,7 +92,11 @@ module.exports.getStatistics = function getStatistics (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.getTeamChat = function getTeamChat (req, res, next, userid, teamid) {
+module.exports.getTeamChat = function getTeamChat (req, res, next) {
+  // Extract the params
+  const userid = req.params.userid;
+  const teamid = req.params.teamid;
+
   // Call the getTeamChat function from the UserService, passing the userid and teamid
   User.getTeamChat(userid, teamid)
     .then(function (response) {
@@ -116,7 +120,12 @@ module.exports.getTeamChat = function getTeamChat (req, res, next, userid, teami
 
   returns http response based on the result of the operation
 */
-module.exports.getTeammateInfo = function getTeammateInfo (req, res, next, userId, teamId, teammateUserId) {
+module.exports.getTeammateInfo = function getTeammateInfo (req, res, next) {
+  // Extract the params
+  const userId = req.params.userId;
+  const teamId = req.params.teamId;
+  const teammateUserId = req.params.teammateUserId;
+
   // Call the getTeammateInfo function from the UserService, passing userId, teamId, and teammateUserId
   User.getTeammateInfo(userId, teamId, teammateUserId)
     .then(function (response) {
@@ -138,7 +147,11 @@ module.exports.getTeammateInfo = function getTeammateInfo (req, res, next, userI
 
   returns http response based on the result of the operation
 */
-module.exports.getWorkout = function getWorkout (req, res, next, userId, teamId) {
+module.exports.getWorkout = function getWorkout (req, res, next) {
+  // Extract the params
+  const userId = req.params.userId;
+  const teamId = req.params.teamId;
+
   // Call the getWorkout function from the UserService, passing userId and teamId
   User.getWorkout(userId, teamId)
     .then(function (response) {
