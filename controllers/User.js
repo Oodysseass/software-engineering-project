@@ -249,7 +249,11 @@ module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, nex
 
   returns http response based on the result of the operation
 */
-module.exports.updateUser = function updateUser (req, res, next, body, userId) {
+module.exports.updateUser = function updateUser (req, res, next) {
+  // Extract the body and the params
+  const { body } = req;
+  const userId = req.params.userId;
+
   // Call the updateUser function from the UserService, passing the body and userId
   User.updateUser(body, userId)
     .then(function (response) {
@@ -274,7 +278,10 @@ module.exports.updateUser = function updateUser (req, res, next, body, userId) {
 
   returns http response based on the result of the operation
 */
-module.exports.userUserIdGET = function userUserIdGET (req, res, next, userId) {
+module.exports.userUserIdGET = function userUserIdGET (req, res, next) {
+  // Extract the params
+  const userId = req.params.userId;
+
   // Call the userUserIdGET function from the UserService, passing the userId
   User.userUserIdGET(userId)
     .then(function (response) {
