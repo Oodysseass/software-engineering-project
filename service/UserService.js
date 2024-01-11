@@ -236,9 +236,6 @@ exports.updateUser = function(body,userId) {
       BasicInformation: 'object',
     };
 
-    if (userId != body.userId)
-      reject(new Error("Forbidden"))
-
     for (let key of Object.keys(example))
       if (!body[key])
         reject(new Error("New user object has not correct structure"));
@@ -246,6 +243,9 @@ exports.updateUser = function(body,userId) {
     for (let [key, type] of Object.entries(example))
       if (typeof body[key] != type)
         reject(new Error("New user object has not correct structure"));
+
+    if (userId != body.userId)
+      reject(new Error("Forbidden"))
 
     resolve(body);
   });
