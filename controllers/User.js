@@ -14,7 +14,7 @@ var User = require('../service/UserService');
 
   returns http response based on the result of the operation
 */
-module.exports.createTeam = function createTeam (req, res, next) {
+module.exports.createTeam = function createTeam(req, res) {
   // Extract the body and the params
   const { body } = req;
   const userId = req.params.userId;
@@ -40,7 +40,7 @@ module.exports.createTeam = function createTeam (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.getContacts = function getContacts (req, res, next) {
+module.exports.getContacts = function getContacts(req, res) {
   // Extract the params
   const userId = req.params.userId;
   const teamId = req.params.teamId;
@@ -66,7 +66,7 @@ module.exports.getContacts = function getContacts (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.getStatistics = function getStatistics (req, res, next) {
+module.exports.getStatistics = function getStatistics(req, res) {
   // Extract the params
   const userId = req.params.userId;
   const teamId = req.params.teamId;
@@ -92,7 +92,7 @@ module.exports.getStatistics = function getStatistics (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.getTeamChat = function getTeamChat (req, res, next) {
+module.exports.getTeamChat = function getTeamChat(req, res) {
   // Extract the params
   const userid = req.params.userid;
   const teamid = req.params.teamid;
@@ -120,7 +120,7 @@ module.exports.getTeamChat = function getTeamChat (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.getTeammateInfo = function getTeammateInfo (req, res, next) {
+module.exports.getTeammateInfo = function getTeammateInfo(req, res) {
   // Extract the params
   const userId = req.params.userId;
   const teamId = req.params.teamId;
@@ -147,7 +147,7 @@ module.exports.getTeammateInfo = function getTeammateInfo (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.getWorkout = function getWorkout (req, res, next) {
+module.exports.getWorkout = function getWorkout(req, res) {
   // Extract the params
   const userId = req.params.userId;
   const teamId = req.params.teamId;
@@ -171,7 +171,7 @@ module.exports.getWorkout = function getWorkout (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.loginUser = function loginUser (req, res, next) {
+module.exports.loginUser = function loginUser(req, res) {
   // Extract the request body
   const { body } = req;
 
@@ -194,7 +194,7 @@ module.exports.loginUser = function loginUser (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.seeInvitation = function seeInvitation (req, res, next) {
+module.exports.seeInvitation = function seeInvitation(req, res) {
   // Extract parameter
   const userId = req.params.userId;
 
@@ -221,7 +221,7 @@ module.exports.seeInvitation = function seeInvitation (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, next) {
+module.exports.sendTeamChatMessage = function sendTeamChatMessage(req, res) {
   // Extract the body and the params
   const { body } = req;
   const userid = req.params.userid;
@@ -248,7 +248,7 @@ module.exports.sendTeamChatMessage = function sendTeamChatMessage (req, res, nex
 
   returns http response based on the result of the operation
 */
-module.exports.updateUser = function updateUser (req, res, next) {
+module.exports.updateUser = function updateUser(req, res) {
   // Extract the body and the params
   const { body } = req;
   const userId = req.openapi.pathParams.userId;
@@ -277,7 +277,7 @@ module.exports.updateUser = function updateUser (req, res, next) {
 
   returns http response based on the result of the operation
 */
-module.exports.userUserIdGET = function userUserIdGET (req, res, next) {
+module.exports.userUserIdGET = function userUserIdGET(req, res) {
   // Extract the params
   const userId = req.params.userId;
 

@@ -9,18 +9,18 @@
  * teamid Integer 
  * returns List
  **/
-exports.getCalendar = function(userid,teamid) {
-  return new Promise(function(resolve, reject) {
+exports.getCalendar = function () {
+  return new Promise(function (resolve) {
     var examples = {};
-    examples['application/json'] = [ {
-  "location" : "gym",
-  "time" : "13.30",
-  "practice" : "Weight"
-}, {
-  "location" : "court",
-  "time" : "19.30",
-  "practice" : "Basketball"
-} ];
+    examples['application/json'] = [{
+      "location": "gym",
+      "time": "13.30",
+      "practice": "Weight"
+    }, {
+      "location": "court",
+      "time": "19.30",
+      "practice": "Basketball"
+    }];
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -39,9 +39,9 @@ exports.getCalendar = function(userid,teamid) {
  * teamid Integer 
  * returns List
  **/
-exports.editCalendar = function(body,userid,teamid) {
-  return new Promise(function(resolve, reject) {
-    if (body.length > 0){
+exports.editCalendar = function (body) {
+  return new Promise(function (resolve, reject) {
+    if (body.length > 0) {
       resolve(body)
     } else {
       reject(new Error('Empty calendar object'))
@@ -59,9 +59,9 @@ exports.editCalendar = function(body,userid,teamid) {
  * teamId String the id of team
  * returns teamId_statistics_body
  **/
-exports.editStatistics = function(body,userId,teamId) {
-  return new Promise(function(resolve, reject) {
-    if (body.statfile){
+exports.editStatistics = function (body) {
+  return new Promise(function (resolve, reject) {
+    if (body.statfile) {
       resolve(body)
     } else {
       reject(new Error('Empty statfile'))
@@ -79,9 +79,9 @@ exports.editStatistics = function(body,userId,teamId) {
  * teamId String the id of team
  * returns teamId_workout_body
  **/
-exports.editWorkout = function(body,userId,teamId) {
-  return new Promise(function(resolve, reject) {
-    if (body.workoutfile){
+exports.editWorkout = function (body) {
+  return new Promise(function (resolve, reject) {
+    if (body.workoutfile) {
       resolve(body)
     } else {
       reject(new Error('Empty workout file'))
@@ -99,12 +99,12 @@ exports.editWorkout = function(body,userId,teamId) {
  * teammateUserId String the id of the team member that the admin wants to kick.
  * returns inline_response_200_6
  **/
-exports.kickTeammate = function(userId,teamId,teammateUserId) {
-  return new Promise(function(resolve, reject) {
+exports.kickTeammate = function () {
+  return new Promise(function (resolve) {
     var examples = {};
     examples['application/json'] = {
-  "message" : "Successful operation"
-};
+      "message": "Successful operation"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -123,17 +123,17 @@ exports.kickTeammate = function(userId,teamId,teammateUserId) {
  * invitedUserEmail String the email of the invited user
  * returns inline_response_200_4
  **/
-exports.sendInvitation = function(userId, teamId, invitedUserEmail) {
-  return new Promise(function(resolve, reject) {
+exports.sendInvitation = function (userId, teamId, invitedUserEmail) {
+  return new Promise(function (resolve, reject) {
     // Checking if any of the keys has an empty value
     if (!userId || !teamId || !invitedUserEmail) {
       reject(new Error('One or more required fields are empty'));
     } else {
       var examples = {};
       examples['application/json'] = {
-        "teamId" :  2,
-        "userId" :  1,
-        "invitedUserEmail" : "tasoulis@example.com"
+        "teamId": 2,
+        "userId": 1,
+        "invitedUserEmail": "tasoulis@example.com"
       };
       if (Object.keys(examples).length > 0) {
         resolve(examples[Object.keys(examples)[0]]);

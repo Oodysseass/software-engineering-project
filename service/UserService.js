@@ -9,9 +9,9 @@
  * teamName String the name of the created team
  * returns inline_response_200_3
  **/
-exports.createTeam = function(body, userId) {
-  return new Promise(function(resolve, reject) {
-    if (body.TeamName){
+exports.createTeam = function (body) {
+  return new Promise(function (resolve, reject) {
+    if (body.TeamName) {
       resolve(body);
     } else {
       reject(new Error("Empty team name"))
@@ -28,18 +28,18 @@ exports.createTeam = function(body, userId) {
  * teamId String the id of the team.
  * returns List
  **/
-exports.getContacts = function(userId,teamId) {
-  return new Promise(function(resolve, reject) {
+exports.getContacts = function () {
+  return new Promise(function (resolve) {
     var examples = {};
-    examples['application/json'] = [ {
-  "name" : "tasos",
-  "surname" : "karakoul",
-  "profileimage" : "1111111"
-}, {
-  "name" : "giwrgos",
-  "surname" : "gkyzis",
-  "profileimage" : "0000001"
-} ];
+    examples['application/json'] = [{
+      "name": "tasos",
+      "surname": "karakoul",
+      "profileimage": "1111111"
+    }, {
+      "name": "giwrgos",
+      "surname": "gkyzis",
+      "profileimage": "0000001"
+    }];
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -57,12 +57,12 @@ exports.getContacts = function(userId,teamId) {
  * teamId String the id of team
  * returns inline_response_200_9
  **/
-exports.getStatistics = function(userId,teamId) {
-  return new Promise(function(resolve, reject) {
+exports.getStatistics = function () {
+  return new Promise(function (resolve) {
     var examples = {};
     examples['application/json'] = {
-  "statfile" : "U3RhdGlzdGljc0ZpbGU="
-};
+      "statfile": "U3RhdGlzdGljc0ZpbGU="
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -80,16 +80,16 @@ exports.getStatistics = function(userId,teamId) {
  * teamid Integer The ID of the team
  * returns List
  **/
-exports.getTeamChat = function(userid,teamid) {
-  return new Promise(function(resolve, reject) {
+exports.getTeamChat = function () {
+  return new Promise(function (resolve) {
     var examples = {};
-    examples['application/json'] = [ {
-  "message" : " Hello team!",
-  "senderId" : 1
-}, {
-  "message" : "Match Day!!! LET'S",
-  "senderId" : 2
-} ];
+    examples['application/json'] = [{
+      "message": " Hello team!",
+      "senderId": 1
+    }, {
+      "message": "Match Day!!! LET'S",
+      "senderId": 2
+    }];
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -108,19 +108,19 @@ exports.getTeamChat = function(userid,teamid) {
  * teammateUserId String the id of the teammate that the user wants to see his information.
  * returns user_BasicInformation
  **/
-exports.getTeammateInfo = function(userId,teamId,teammateUserId) {
-  return new Promise(function(resolve, reject) {
+exports.getTeammateInfo = function () {
+  return new Promise(function (resolve) {
     var examples = {};
     examples['application/json'] = {
-  "phone" : "6932112312",
-  "surname" : "Beltes",
-  "name" : "Anastasis",
-  "weight" : 80.5,
-  "profileimage" : "101010111",
-  "age" : 22,
-  "email" : "tasoulis@example.com",
-  "height" : 185.5
-};
+      "phone": "6932112312",
+      "surname": "Beltes",
+      "name": "Anastasis",
+      "weight": 80.5,
+      "profileimage": "101010111",
+      "age": 22,
+      "email": "tasoulis@example.com",
+      "height": 185.5
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -138,12 +138,12 @@ exports.getTeammateInfo = function(userId,teamId,teammateUserId) {
  * teamId String the id of team
  * returns inline_response_200_10
  **/
-exports.getWorkout = function(userId,teamId) {
-  return new Promise(function(resolve, reject) {
+exports.getWorkout = function () {
+  return new Promise(function (resolve) {
     var examples = {};
     examples['application/json'] = {
-  "workoutfile" : "V29ya091dEZpbGU="
-};
+      "workoutfile": "V29ya091dEZpbGU="
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -160,10 +160,10 @@ exports.getWorkout = function(userId,teamId) {
  * body User_login_body Login Credentials
  * returns inline_response_200_1
  **/
-exports.loginUser = function(body) {
-  return new Promise(function(resolve, reject) {
+exports.loginUser = function (body) {
+  return new Promise(function (resolve, reject) {
     if (body.email && body.password) {
-      resolve({token: "000001"});
+      resolve({ token: "000001" });
     } else {
       reject(new Error("Empty login body"));
     }
@@ -178,12 +178,12 @@ exports.loginUser = function(body) {
  * userId Integer 
  * returns inline_response_200_2
  **/
-exports.seeInvitation = function(userId) {
-  return new Promise(function(resolve, reject) {
+exports.seeInvitation = function () {
+  return new Promise(function (resolve) {
     var examples = {};
     examples['application/json'] = {
-  "TeamName" : "[\"Omadara\",\" Omada2\"]"
-};
+      "TeamName": "[\"Omadara\",\" Omada2\"]"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -202,14 +202,14 @@ exports.seeInvitation = function(userId) {
  * teamid Integer The ID of the team
  * returns teamid_teamChat_body
  **/
-exports.sendTeamChatMessage = function(body,userid,teamid) {
-  return new Promise(function(resolve, reject) {
+exports.sendTeamChatMessage = function (body) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "senderId" : 1,
-  "message" : "Hello team!"
-};
-    if (body.senderId && body.message){
+      "senderId": 1,
+      "message": "Hello team!"
+    };
+    if (body.senderId && body.message) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
       reject(new Error("Not right message structure"))
@@ -226,8 +226,8 @@ exports.sendTeamChatMessage = function(body,userid,teamid) {
  * userId String id of the user that need to update his/her info
  * returns inline_response_200
  **/
-exports.updateUser = function(body,userId) {
-  return new Promise(function(resolve, reject) {
+exports.updateUser = function (body, userId) {
+  return new Promise(function (resolve, reject) {
     const example = {
       password: 'string',
       teamdId: 'number',
@@ -258,25 +258,25 @@ exports.updateUser = function(body,userId) {
  * userId Integer 
  * returns inline_response_200
  **/
-exports.userUserIdGET = function(userId) {
-  return new Promise(function(resolve, reject) {
+exports.userUserIdGET = function () {
+  return new Promise(function (resolve) {
     var examples = {};
     examples['application/json'] = {
-  "password" : "test1233",
-  "teamdId" : 2,
-  "isAdmin" : true,
-  "userId" : 1,
-  "BasicInformation" : {
-    "phone" : "6932112312",
-    "surname" : "Beltes",
-    "name" : "Anastasis",
-    "weight" : 80.5,
-    "profileimage" : "101010111",
-    "age" : 22,
-    "email" : "tasoulis@example.com",
-    "height" : 185.5
-  }
-};
+      "password": "test1233",
+      "teamdId": 2,
+      "isAdmin": true,
+      "userId": 1,
+      "BasicInformation": {
+        "phone": "6932112312",
+        "surname": "Beltes",
+        "name": "Anastasis",
+        "weight": 80.5,
+        "profileimage": "101010111",
+        "age": 22,
+        "email": "tasoulis@example.com",
+        "height": 185.5
+      }
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
